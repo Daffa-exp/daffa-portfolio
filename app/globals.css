@@ -2579,26 +2579,55 @@ a.hero-contact-item:hover {
     margin-top: 18px;
   }
 
-  /* Stats cards - 3 columns on large phones */
+  /* Stats cards - 3 vertical-column compact cards on mobile so all 3 fit without overflow */
   .stats-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-top: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 20px;
+    width: 100%;
   }
-  /* Correct class name is stats-card, not stat-card */
   .stats-card {
-    padding: 10px 8px;
-    gap: 8px;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    padding: 10px 4px;
+    gap: 4px;
+    min-width: 0;
+    overflow: hidden;
   }
   .stats-card-icon {
     width: 28px;
     height: 28px;
     flex-shrink: 0;
+    margin: 0 auto;
   }
-  .stats-num { font-size: 16px; }
-  .stats-label { font-size: 7px; }
+  .stats-card-data {
+    text-align: center;
+    justify-items: center;
+  }
+  .stats-num { font-size: 16px; line-height: 1; }
+  .stats-label {
+    font-size: 7px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin-top: 2px;
+  }
   /* hero-copy must not exceed viewport width */
-  .hero-copy { max-width: 100%; }
+  .hero-copy {
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  .hero-copy > p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 14px 0;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
 
   /* ── Lanyard ── */
   .lanyard-scene {
@@ -2705,11 +2734,11 @@ a.hero-contact-item:hover {
   }
   .role-line { font-size: 13px; gap: 7px; }
 
-  .stats-cards-grid { gap: 6px; }
-  .stats-card { padding: 8px 6px; gap: 6px; }
-  .stats-card-icon { width: 26px; height: 26px; }
-  .stats-num { font-size: 15px; }
-  .stats-label { font-size: 7px; }
+  .stats-cards-grid { gap: 5px; }
+  .stats-card { padding: 8px 3px; gap: 3px; }
+  .stats-card-icon { width: 24px; height: 24px; }
+  .stats-num { font-size: 14px; }
+  .stats-label { font-size: 6.5px; }
 
   .lanyard-scene {
     min-height: 420px;

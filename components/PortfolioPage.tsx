@@ -25,15 +25,18 @@ import { allProjects, certificates, featuredProjects, moreProjects, skills, type
 import { ProjectModal } from "./ProjectModal";
 import { CertificateCarousel } from "./CertificateCarousel";
 import { AmbientBackground } from "./AmbientBackground";
+import { Laptop3D } from "./Laptop3D";
+import { LanyardCard } from "./LanyardCard";
+import { HeroHoloWidgets } from "./HeroHoloWidgets";
 
 // Snappy entry animation config
 const reveal = {
-  hidden: { opacity: 0, y: 10 },
+  hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.32,
+      duration: 0.35,
       ease: [0.25, 0.1, 0.25, 1.0] as const
     }
   }
@@ -135,16 +138,13 @@ export default function PortfolioPage() {
     };
   }, []);
 
-  // ── Observer 2: CSS scroll-reveal — adds `in-view` class to trigger
-  //    GPU-composited CSS animations (section divider glow, card stagger).
-  //    Uses a single shared observer instance for all .section elements.
+  // ── Observer 2: CSS scroll-reveal — adds `in-view` class to trigger CSS effects
   useEffect(() => {
     const els = Array.from(document.querySelectorAll(".section"));
     if (!els.length) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Toggle so the border re-animates each time the section enters
           if (entry.isIntersecting) {
             entry.target.classList.add("in-view");
           }
@@ -156,7 +156,7 @@ export default function PortfolioPage() {
     return () => observer.disconnect();
   }, []);
 
-  // Programmatic smooth scroll handler (so manual scroll wheel isn't hijacked)
+  // Programmatic smooth scroll handler
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
@@ -170,7 +170,7 @@ export default function PortfolioPage() {
   return (
     <main>
       <AmbientBackground />
-      
+
       <header className="navbar">
         {/* Monogram Logo */}
         <a className="brand-logo" href="#home" onClick={(e) => handleScrollTo(e, "home")}>
@@ -203,7 +203,7 @@ export default function PortfolioPage() {
           ))}
         </nav>
 
-        {/* Navbar Actions (GitHub Link & Hamburger Toggle) */}
+        {/* Navbar Actions */}
         <div className="navbar-actions">
           <a className="github-link" href="https://github.com/Daffa-exp" target="_blank" rel="noopener noreferrer">
             <Github size={15} /> GitHub
@@ -214,7 +214,7 @@ export default function PortfolioPage() {
         </div>
       </header>
 
-      {/* Mobile Hamburger Menu Drawer */}
+      {/* Mobile Navigation Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -252,8 +252,10 @@ export default function PortfolioPage() {
         )}
       </AnimatePresence>
 
+      {/* HERO SECTION */}
       <section id="home" className="hero section-shell">
         <div className="hero-grid">
+          {/* Left Hero Column: Copy & Actions */}
           <motion.div className="hero-copy" initial="hidden" animate="visible" variants={reveal}>
             <span className="eyebrow">HELLO, I'M</span>
             <h1 className="hero-name">
@@ -261,15 +263,15 @@ export default function PortfolioPage() {
               <span className="name-accent">Daffa</span>
               <span>Permana</span>
             </h1>
-            
+
             <div className="role-line">
               <span className="status-dot" /> Junior Software Developer
             </div>
-            
+
             <p>
               Pelajar dengan minat mendalam di Software Development, khususnya Back-End Development, serta pengalaman membangun aplikasi Web, Desktop, dan Mobile menggunakan teknologi modern.
             </p>
-            
+
             <div className="button-row">
               <a className="button button-primary" href="#projects" onClick={(e) => handleScrollTo(e, "projects")}>
                 View Projects <span style={{ marginLeft: "4px", fontSize: "11px" }}>↘</span>
@@ -279,7 +281,6 @@ export default function PortfolioPage() {
               </a>
             </div>
 
-            {/* Email & Location details directly under buttons */}
             <div className="hero-contact-info">
               <a href="mailto:permanadaffa89@gmail.com" className="hero-contact-item">
                 <Mail size={14} /> permanadaffa89@gmail.com
@@ -289,7 +290,7 @@ export default function PortfolioPage() {
               </span>
             </div>
 
-            {/* Stats Cards - Recomposed inside Hero left column */}
+            {/* Statistics Cards */}
             <div className="stats-cards-grid">
               <div className="stats-card">
                 <div className="stats-card-icon proj-icon">
@@ -321,6 +322,7 @@ export default function PortfolioPage() {
             </div>
           </motion.div>
 
+          {/* Social Rail */}
           <div className="hero-rail" aria-label="Social links">
             <a href="https://github.com/Daffa-exp" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <Github size={17} />
@@ -331,123 +333,17 @@ export default function PortfolioPage() {
             <span className="hero-rail-line" />
           </div>
 
-          <motion.div
-            className="lanyard-scene"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.05, ease: "easeOut" }}
-          >
-            <div className="lanyard-rig">
-              {/* Cohesive Lanyard SVG representing physical fabrics, steel loops, and lobster clasp hook */}
-              <svg className="lanyard-rope" viewBox="0 -30 420 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-                <defs>
-                  <linearGradient id="strapGradientLeft" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stopColor="#0b0e1a" />
-                    <stop offset=".25" stopColor="#2c3a70" />
-                    <stop offset=".5" stopColor="#5d72cc" />
-                    <stop offset=".75" stopColor="#243160" />
-                    <stop offset="1" stopColor="#070a14" />
-                  </linearGradient>
-                  <linearGradient id="strapGradientRight" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stopColor="#070a13" />
-                    <stop offset=".25" stopColor="#202c5c" />
-                    <stop offset=".5" stopColor="#5366c0" />
-                    <stop offset=".75" stopColor="#243160" />
-                    <stop offset="1" stopColor="#0b0e1a" />
-                  </linearGradient>
-                  
-                  <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stopColor="#dce3f4" />
-                    <stop offset="0.3" stopColor="#8795ad" />
-                    <stop offset="0.6" stopColor="#303b4d" />
-                    <stop offset="1" stopColor="#a6b5cc" />
-                  </linearGradient>
-                  
-                  <filter id="strapShadow" x="-30%" y="-10%" width="160%" height="130%">
-                    <feDropShadow dx="6" dy="10" stdDeviation="6" floodColor="#000" floodOpacity=".5" />
-                  </filter>
-                  
-                  {/* Left and Right fabric strap geometry starting inside viewBox */}
-                  <path id="leftStrap" d="M142 -20 C146 54 153 104 171 151 C184 185 198 212 209 238" />
-                  <path id="rightStrap" d="M276 -20 C272 54 265 104 247 151 C234 185 220 212 209 238" />
-                </defs>
+          {/* Right Hero Column: 3D Laptop, Lanyard, & Holographic Widgets */}
+          <div className="hero-visual-3d-stage">
+            {/* Holographic Floating Widgets */}
+            <HeroHoloWidgets />
 
-                {/* Strap shadows */}
-                <use href="#leftStrap" className="strap-shadow" />
-                <use href="#rightStrap" className="strap-shadow" />
+            {/* 3D Laptop Centerpiece */}
+            <Laptop3D />
 
-                {/* Main fabric ribbons */}
-                <use href="#leftStrap" className="strap-ribbon" stroke="url(#strapGradientLeft)" />
-                <use href="#rightStrap" className="strap-ribbon" stroke="url(#strapGradientRight)" />
+            {/* Floating Developer ID Lanyard */}
+            <LanyardCard />
 
-                {/* Ribbon high-fidelity texture lines */}
-                <use href="#leftStrap" className="strap-ribbon-highlight" />
-                <use href="#rightStrap" className="strap-ribbon-highlight" />
-
-                {/* Curved Printed Name DAFFA-EXP along Left & Right paths */}
-                <text fill="rgba(225,233,255,0.48)" fontSize="7" fontWeight="700" letterSpacing="1.2" className="strap-text-path" dominantBaseline="middle">
-                  <textPath href="#leftStrap" startOffset="10%">
-                    {"DAFFA-EXP\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0DAFFA-EXP\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0DAFFA-EXP"}
-                  </textPath>
-                </text>
-                <text fill="rgba(225,233,255,0.48)" fontSize="7" fontWeight="700" letterSpacing="1.2" className="strap-text-path" dominantBaseline="middle">
-                  <textPath href="#rightStrap" startOffset="10%">
-                    {"DAFFA-EXP\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0DAFFA-EXP\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0DAFFA-EXP"}
-                  </textPath>
-                </text>
-
-                {/* Realistic Steel Swivel Clip Elements directly inside the SVG */}
-                <g className="metal-hardware" filter="url(#strapShadow)">
-                  {/* Outer Steel ring holding the straps */}
-                  <ellipse cx="209" cy="242" rx="14" ry="7" fill="none" stroke="url(#metalGrad)" strokeWidth="3" />
-                  
-                  {/* Small Swivel Cylinder */}
-                  <rect x="206" y="247" width="6" height="9" rx="1.5" fill="url(#metalGrad)" />
-                  
-                  {/* Carabiner lobster clasp loop entering card slot */}
-                  <path 
-                    d="M209 256 C201 256, 196 264, 198 274 C200 282, 205 284, 209 284 C213 284, 218 281, 219 274 L219 261 Z" 
-                    fill="none" 
-                    stroke="url(#metalGrad)" 
-                    strokeWidth="3.2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                  />
-                  {/* Swivel trigger bar */}
-                  <line x1="202" y1="262" x2="215" y2="278" stroke="url(#metalGrad)" strokeWidth="1.6" />
-                </g>
-              </svg>
-
-              {/* Developer ID Card hanging from the hook */}
-              <div className="id-card">
-                <span className="card-slot" aria-hidden="true" />
-                <div className="card-top">
-                  <span>DEVELOPER ID</span>
-                  <span className="live-led" />
-                </div>
-                <div className="photo-frame">
-                  <Image src="/assets/daffa.jpg" alt="Muhamad Daffa Permana" fill priority sizes="240px" />
-                </div>
-                <div className="card-name">
-                  Muhamad Daffa
-                  <br />
-                  Permana
-                </div>
-                <div className="card-role">Junior Software Developer</div>
-                <div className="barcode">
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <div className="card-code">DAFFA-EXP</div>
-              </div>
-            </div>
-            
             <div className="orb orb-a" />
             <div className="orb orb-b" />
             <div className="scroll-cue">
@@ -459,10 +355,11 @@ export default function PortfolioPage() {
               </span>
               <ArrowDown size={14} />
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
+      {/* ABOUT SECTION */}
       <section id="about" className="section section-about">
         <div className="section-shell two-col">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={reveal}>
@@ -500,6 +397,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* SKILLS SECTION */}
       <section id="skills" className="section">
         <div className="section-shell">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={reveal}>
@@ -531,6 +429,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* FEATURED PROJECTS SECTION */}
       <section id="projects" className="section projects-section">
         <div className="section-shell">
           <motion.div
@@ -624,6 +523,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* OTHER PROJECTS SECTION */}
       <section className="section more-section">
         <div className="section-shell">
           <motion.div
@@ -682,6 +582,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* CERTIFICATES SECTION */}
       <section id="certificates" className="section certificates-section">
         <div className="section-shell">
           <motion.div
@@ -701,6 +602,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* CONTACT SECTION */}
       <section id="contact" className="section contact-section">
         <div className="section-shell contact-grid">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={reveal}>

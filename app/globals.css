@@ -866,11 +866,11 @@ a.hero-contact-item:hover {
   position: absolute;
   z-index: 6;
   left: 50%;
-  top: 280px;
+  top: 275px;
   margin: 0;
   width: 288px;
-  height: 448px;
-  padding: 16px 16px 14px;  /* inner padding so content breathes inside the card */
+  height: 410px;
+  padding: 16px 16px 14px;
   transform: translateX(-50%);
   transform-origin: 50% 0%;
   border-radius: 20px;
@@ -943,9 +943,8 @@ a.hero-contact-item:hover {
 
 .photo-frame {
   position: relative;
-  /* Reduced height so the face fits naturally — was 245px which caused over-cropping */
-  height: 210px;
-  margin: 12px 0 12px;
+  height: 200px;
+  margin: 10px 0 10px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -954,9 +953,8 @@ a.hero-contact-item:hover {
 }
 
 .photo-frame img {
-  /* contain shows the full portrait without harsh cropping */
-  object-fit: contain;
-  object-position: center center;
+  object-fit: cover;
+  object-position: center 20%;
   background: #111827;
 }
 

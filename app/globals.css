@@ -479,8 +479,11 @@ main {
 
 .hero-copy {
   max-width: 650px;
+  width: 100%;
   position: relative;
   z-index: 2;
+  /* Ensure it never overflows its grid cell */
+  min-width: 0;
 }
 
 .hero-copy::before {
@@ -505,9 +508,8 @@ main {
 .hero-name {
   display: grid;
   gap: 0;
-  /* max-content was the culprit — it caused overflow on small screens */
-  width: 100%;
-  max-width: max-content;
+  width: fit-content;
+  max-width: 100%;
   font-size: clamp(3.2rem, 5.8vw, 6.2rem);
   line-height: 0.9;
   letter-spacing: -0.075em;
@@ -518,7 +520,7 @@ main {
 
 .hero-name span {
   display: block;
-  white-space: nowrap; /* keep each line on one row */
+  white-space: nowrap;
 }
 
 .hero-name .name-accent {
@@ -632,10 +634,16 @@ main {
 .hero-contact-item {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: #717d94;
   font: 11px "DM Mono", monospace;
   transition: color 0.2s;
+  /* Prevent long email from overflowing on mobile */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .hero-contact-item svg {
@@ -657,13 +665,16 @@ a.hero-contact-item:hover {
 .stats-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
+  gap: 10px;
+  padding: 12px 14px;
   border-radius: 14px;
   border: 1px solid var(--border);
   background: rgba(10, 14, 24, 0.42);
   backdrop-filter: blur(8px);
   transition: border-color 0.25s, background 0.25s;
+  /* Prevent overflow on very small screens */
+  min-width: 0;
+  overflow: hidden;
 }
 
 .stats-card:hover {
@@ -2574,9 +2585,20 @@ a.hero-contact-item:hover {
     gap: 8px;
     margin-top: 18px;
   }
-  .stat-card { padding: 12px 8px; }
-  .stat-card .stat-value { font-size: 18px; }
-  .stat-card .stat-label { font-size: 9px; }
+  /* Correct class name is stats-card, not stat-card */
+  .stats-card {
+    padding: 10px 8px;
+    gap: 8px;
+  }
+  .stats-card-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .stats-num { font-size: 16px; }
+  .stats-label { font-size: 7px; }
+  /* hero-copy must not exceed viewport width */
+  .hero-copy { max-width: 100%; }
 
   /* ── Lanyard ── */
   .lanyard-scene {
@@ -2683,9 +2705,11 @@ a.hero-contact-item:hover {
   }
   .role-line { font-size: 13px; gap: 7px; }
 
-  .stats-cards-grid { gap: 7px; }
-  .stat-card { padding: 10px 6px; }
-  .stat-card .stat-value { font-size: 16px; }
+  .stats-cards-grid { gap: 6px; }
+  .stats-card { padding: 8px 6px; gap: 6px; }
+  .stats-card-icon { width: 26px; height: 26px; }
+  .stats-num { font-size: 15px; }
+  .stats-label { font-size: 7px; }
 
   .lanyard-scene {
     min-height: 420px;

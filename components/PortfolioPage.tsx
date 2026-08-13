@@ -333,26 +333,29 @@ export default function PortfolioPage() {
             <span className="hero-rail-line" />
           </div>
 
-          {/* Right Hero Column: 3D Laptop, Lanyard, & Holographic Widgets */}
-          <div className="hero-visual-3d-stage">
-            {/* Holographic Floating Widgets */}
+          {/* Right Hero Column: 3D Stage */}
+          <div className="hero-3d-stage">
+            {/* Atmospheric orbs behind everything */}
+            <div className="stage-orb stage-orb-a" />
+            <div className="stage-orb stage-orb-b" />
+
+            {/* Left floating TECH STACK widget */}
             <HeroHoloWidgets />
 
-            {/* 3D Laptop Centerpiece */}
-            <Laptop3D />
+            {/* Main 3D Laptop — full column width */}
+            <div className="laptop-canvas-area">
+              <Laptop3D />
+            </div>
 
-            {/* Floating Developer ID Lanyard */}
-            <LanyardCard />
+            {/* Lanyard overlapping top-right of laptop */}
+            <div className="lanyard-anchor">
+              <LanyardCard />
+            </div>
 
-            <div className="orb orb-a" />
-            <div className="orb orb-b" />
+            {/* Scroll cue bottom */}
             <div className="scroll-cue">
               <span className="scroll-mouse" />
-              <span>
-                SCROLL
-                <br />
-                TO EXPLORE
-              </span>
+              <span>SCROLL<br />TO EXPLORE</span>
               <ArrowDown size={14} />
             </div>
           </div>

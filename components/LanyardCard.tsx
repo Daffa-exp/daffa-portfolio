@@ -1,141 +1,151 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
 export function LanyardCard() {
   return (
     <motion.div
-      className="lanyard-container"
-      initial={{ opacity: 0, y: -12 }}
+      className="lanyard-outer"
+      initial={{ opacity: 0, y: -30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+      transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="lanyard-wrapper">
-        {/* Realistically curved Rope SVG ribbon with DAFFA-EXP repeating text */}
-        <svg
-          className="lanyard-rope-svg"
-          viewBox="0 0 400 520"
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="strapGradLeft" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0a0e19" />
-              <stop offset="30%" stopColor="#1e2952" />
-              <stop offset="60%" stopColor="#4f63c6" />
-              <stop offset="85%" stopColor="#1e2952" />
-              <stop offset="100%" stopColor="#080b14" />
-            </linearGradient>
-            <linearGradient id="strapGradRight" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#080b14" />
-              <stop offset="25%" stopColor="#1d2850" />
-              <stop offset="55%" stopColor="#485bbd" />
-              <stop offset="80%" stopColor="#1d2850" />
-              <stop offset="100%" stopColor="#0a0e19" />
-            </linearGradient>
+      {/* ── SVG STRAP — from top viewport to hook ── */}
+      <svg
+        className="lanyard-strap-svg"
+        viewBox="0 0 240 420"
+        preserveAspectRatio="xMidYMax meet"
+        aria-hidden="true"
+        overflow="visible"
+      >
+        <defs>
+          {/* Left ribbon gradient — fabric sheen */}
+          <linearGradient id="lanyardGL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#060912" />
+            <stop offset="28%" stopColor="#1a2560" />
+            <stop offset="55%" stopColor="#4a5bbf" />
+            <stop offset="80%" stopColor="#1a2560" />
+            <stop offset="100%" stopColor="#060912" />
+          </linearGradient>
+          {/* Right ribbon gradient */}
+          <linearGradient id="lanyardGR" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#060912" />
+            <stop offset="25%" stopColor="#16225a" />
+            <stop offset="52%" stopColor="#3f50b8" />
+            <stop offset="78%" stopColor="#16225a" />
+            <stop offset="100%" stopColor="#060912" />
+          </linearGradient>
+          {/* Metal chrome gradient */}
+          <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#e2e8f0" />
+            <stop offset="40%" stopColor="#94a3b8" />
+            <stop offset="75%" stopColor="#2d3a4d" />
+            <stop offset="100%" stopColor="#c8d5e8" />
+          </linearGradient>
+          <filter id="ropeShadow" x="-30%" y="-10%" width="160%" height="120%">
+            <feDropShadow dx="3" dy="8" stdDeviation="5" floodColor="#000" floodOpacity="0.55" />
+          </filter>
 
-            <linearGradient id="metalChrome" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#e2e8f0" />
-              <stop offset="35%" stopColor="#94a3b8" />
-              <stop offset="70%" stopColor="#334155" />
-              <stop offset="100%" stopColor="#cbd5e1" />
-            </linearGradient>
+          {/* Curved strap paths */}
+          <path id="sl" d="M 80 -40 C 84 60 95 130 110 190 C 120 230 126 255 120 275" />
+          <path id="sr" d="M 160 -40 C 156 60 145 130 130 190 C 120 230 114 255 120 275" />
+        </defs>
 
-            <filter id="hookShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="3" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.6" />
-            </filter>
+        {/* Strap shadows */}
+        <use href="#sl" fill="none" stroke="#000" strokeWidth="28" strokeOpacity="0.5" strokeLinecap="round" />
+        <use href="#sr" fill="none" stroke="#000" strokeWidth="28" strokeOpacity="0.5" strokeLinecap="round" />
 
-            {/* Strap Paths starting from top viewport edge down to the central swivel hook */}
-            <path id="leftStrapPath" d="M 130 -30 C 135 60 148 120 168 180 C 182 220 195 245 200 270" />
-            <path id="rightStrapPath" d="M 270 -30 C 265 60 252 120 232 180 C 218 220 205 245 200 270" />
-          </defs>
+        {/* Main fabric ribbons */}
+        <use href="#sl" fill="none" stroke="url(#lanyardGL)" strokeWidth="26" strokeLinecap="round" />
+        <use href="#sr" fill="none" stroke="url(#lanyardGR)" strokeWidth="26" strokeLinecap="round" />
 
-          {/* Ribbon Base Fabric */}
-          <use href="#leftStrapPath" className="strap-ribbon-base" stroke="url(#strapGradLeft)" />
-          <use href="#rightStrapPath" className="strap-ribbon-base" stroke="url(#strapGradRight)" />
+        {/* Highlight sheen */}
+        <use href="#sl" fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="2" strokeLinecap="round" />
+        <use href="#sr" fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="2" strokeLinecap="round" />
 
-          {/* Strap Highlight Edges */}
-          <use href="#leftStrapPath" className="strap-edge-line" />
-          <use href="#rightStrapPath" className="strap-edge-line" />
+        {/* DAFFA-EXP text on ribbons */}
+        <text fill="rgba(210,225,255,0.65)" fontSize="7.5" fontWeight="800" letterSpacing="1.6"
+          style={{ fontFamily: "monospace" }}>
+          <textPath href="#sl" startOffset="5%">
+            DAFFA-EXP · DAFFA-EXP · DAFFA-EXP · DAFFA-EXP
+          </textPath>
+        </text>
+        <text fill="rgba(210,225,255,0.65)" fontSize="7.5" fontWeight="800" letterSpacing="1.6"
+          style={{ fontFamily: "monospace" }}>
+          <textPath href="#sr" startOffset="5%">
+            DAFFA-EXP · DAFFA-EXP · DAFFA-EXP · DAFFA-EXP
+          </textPath>
+        </text>
 
-          {/* DAFFA-EXP Printed Text along left & right strap curves */}
-          <text fill="rgba(224, 231, 255, 0.65)" fontSize="8" fontWeight="800" letterSpacing="1.8">
-            <textPath href="#leftStrapPath" startOffset="8%">
-              DAFFA-EXP &nbsp;&nbsp;&nbsp;&nbsp; DAFFA-EXP &nbsp;&nbsp;&nbsp;&nbsp; DAFFA-EXP
-            </textPath>
-          </text>
-          <text fill="rgba(224, 231, 255, 0.65)" fontSize="8" fontWeight="800" letterSpacing="1.8">
-            <textPath href="#rightStrapPath" startOffset="8%">
-              DAFFA-EXP &nbsp;&nbsp;&nbsp;&nbsp; DAFFA-EXP &nbsp;&nbsp;&nbsp;&nbsp; DAFFA-EXP
-            </textPath>
-          </text>
+        {/* Metal Swivel Hardware */}
+        <g filter="url(#ropeShadow)">
+          {/* O-ring */}
+          <ellipse cx="120" cy="278" rx="14" ry="7"
+            fill="none" stroke="url(#metalGrad)" strokeWidth="3.5" />
+          {/* Cylindrical shackle */}
+          <rect x="116" y="284" width="8" height="11" rx="2" fill="url(#metalGrad)" />
+          {/* Carabiner hook body */}
+          <path
+            d="M120 295 C110 295 106 306 108 318 C110 328 115 331 120 331 C125 331 130 328 132 318 C134 306 130 295 120 295 Z"
+            fill="none" stroke="url(#metalGrad)" strokeWidth="3.5"
+            strokeLinecap="round" strokeLinejoin="round"
+          />
+          {/* Lever bar */}
+          <line x1="113" y1="302" x2="127" y2="322" stroke="url(#metalGrad)" strokeWidth="2" />
+        </g>
+      </svg>
 
-          {/* Metal Swivel Clasp Hardware */}
-          <g className="metal-clasp-group" filter="url(#hookShadow)">
-            {/* Top Swivel Ring */}
-            <ellipse cx="200" cy="272" rx="14" ry="7" fill="none" stroke="url(#metalChrome)" strokeWidth="3.5" />
-            {/* Cylindrical Join */}
-            <rect x="196" y="278" width="8" height="10" rx="2" fill="url(#metalChrome)" />
-            {/* Carabiner Hook Clip */}
-            <path
-              d="M 200 288 C 190 288, 186 298, 188 310 C 190 320, 196 322, 200 322 C 204 322, 210 320, 212 310 C 214 298, 210 288, 200 288 Z"
-              fill="none"
-              stroke="url(#metalChrome)"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            {/* Lever Catch */}
-            <line x1="192" y1="295" x2="208" y2="315" stroke="url(#metalChrome)" strokeWidth="1.8" />
-          </g>
-        </svg>
+      {/* ── ACRYLIC GLASS ID CARD ── */}
+      <motion.div
+        className="id-card-glass"
+        animate={{ rotate: ["-2.5deg", "1.5deg", "-2.5deg"] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      >
+        {/* Top slot notch */}
+        <span className="id-slot-notch" aria-hidden />
 
-        {/* Floating Acrylic Glass ID Card */}
-        <div className="id-card-acrylic">
-          <span className="card-top-slot" aria-hidden="true" />
-          <div className="card-header">
-            <span>DEVELOPER ID</span>
-            <span className="card-status-led" />
-          </div>
-
-          <div className="card-photo-wrapper">
-            <Image
-              src="/assets/daffa.jpg"
-              alt="Muhamad Daffa Permana"
-              fill
-              priority
-              sizes="200px"
-              className="card-photo"
-            />
-          </div>
-
-          <div className="card-details">
-            <div className="card-user-name">
-              Muhamad Daffa
-              <br />
-              Permana
-            </div>
-            <div className="card-user-role">Junior Software Developer</div>
-          </div>
-
-          <div className="card-bottom-bar">
-            <div className="card-barcode-lines">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="card-id-code">DAFFA-EXP</div>
-          </div>
+        {/* Card header */}
+        <div className="id-card-header">
+          <span className="id-header-label">DEVELOPER ID</span>
+          <span className="id-live-dot" />
         </div>
-      </div>
+
+        {/* Photo */}
+        <div className="id-photo-container">
+          <Image
+            src="/assets/daffa.jpg"
+            alt="Muhamad Daffa Permana"
+            fill
+            priority
+            sizes="180px"
+            className="id-photo-img"
+          />
+          {/* Photo overlay gradient */}
+          <div className="id-photo-overlay" />
+        </div>
+
+        {/* Name + Role */}
+        <div className="id-name-block">
+          <p className="id-full-name">Muhamad Daffa<br />Permana</p>
+          <p className="id-role-text">Junior Software Developer</p>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="id-bottom-bar">
+          <div className="id-barcode">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <span key={i} className={`id-bar ${i % 3 === 0 ? "wide" : i % 4 === 0 ? "narrow" : ""}`} />
+            ))}
+          </div>
+          <span className="id-code-text">DAFFA-EXP</span>
+        </div>
+
+        {/* Glass edge glow */}
+        <div className="id-glass-edge" aria-hidden />
+        {/* Reflection sheen */}
+        <div className="id-reflection" aria-hidden />
+      </motion.div>
     </motion.div>
   );
 }

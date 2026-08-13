@@ -339,7 +339,7 @@ export default function PortfolioPage() {
           >
             <div className="lanyard-rig">
               {/* Cohesive Lanyard SVG representing physical fabrics, steel loops, and lobster clasp hook */}
-              <svg className="lanyard-rope" viewBox="0 0 420 560" preserveAspectRatio="none" aria-hidden="true">
+              <svg className="lanyard-rope" viewBox="0 -30 420 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
                 <defs>
                   <linearGradient id="strapGradientLeft" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0" stopColor="#0b0e1a" />
@@ -367,9 +367,9 @@ export default function PortfolioPage() {
                     <feDropShadow dx="6" dy="10" stdDeviation="6" floodColor="#000" floodOpacity=".5" />
                   </filter>
                   
-                  {/* Left and Right fabric strap geometry */}
-                  <path id="leftStrap" d="M142 -24 C146 54 153 104 171 151 C184 185 198 212 209 238" />
-                  <path id="rightStrap" d="M276 -24 C272 54 265 104 247 151 C234 185 220 212 209 238" />
+                  {/* Left and Right fabric strap geometry starting inside viewBox */}
+                  <path id="leftStrap" d="M142 -20 C146 54 153 104 171 151 C184 185 198 212 209 238" />
+                  <path id="rightStrap" d="M276 -20 C272 54 265 104 247 151 C234 185 220 212 209 238" />
                 </defs>
 
                 {/* Strap shadows */}

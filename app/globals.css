@@ -1469,8 +1469,8 @@ a.hero-contact-item:hover {
 .visual-frame-main.device-laptop::after {
   content: "";
   position: absolute;
-  left: -5%;
-  right: -5%;
+  left: -2.5%;
+  right: -2.5%;
   bottom: -23px;
   height: 23px;
   border-radius: 0 0 18px 18px;
@@ -2544,76 +2544,106 @@ a.hero-contact-item:hover {
 
   /* ── Hero ── */
   .hero {
-    padding-top: 96px;
-    padding-bottom: 44px;
+    padding-top: 92px;
+    padding-bottom: 36px;
     min-height: auto;
   }
+  .hero-name {
+    margin: 12px 0 16px;
+    width: 100%;
+    max-width: 100%;
+  }
   .hero h1 {
-    font-size: clamp(2.4rem, 10.5vw, 3.4rem) !important;
+    font-size: clamp(2.1rem, 8.5vw, 3.2rem) !important;
     letter-spacing: -0.04em !important;
-    line-height: 0.92 !important;
+    line-height: 1.08 !important; /* Fix vertical text collision */
     max-width: 100%;
     width: 100%;
   }
-  .hero-name span { white-space: normal; }
-  .hero-name { margin: 12px 0 16px; }
+  .hero-name span {
+    display: block;
+    white-space: nowrap;
+  }
 
-  .role-line { font-size: 14px; }
+  .role-line { font-size: 13.5px; margin-top: 8px; }
 
-  .hero-copy > p { font-size: 13px; margin: 16px 0; }
+  .hero-copy > p {
+    font-size: 13px;
+    line-height: 1.65;
+    margin: 14px 0 18px;
+    color: #929fb8;
+  }
 
-  /* CTA buttons stacked */
+  /* CTA buttons 2-column grid on mobile for sleek look */
   .hero-cta,
   .button-row {
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
   }
   .hero-cta .button,
-  .button-row .button { width: 100%; justify-content: center; }
+  .button-row .button {
+    width: 100% !important;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 11px;
+  }
 
   /* Contact info row below buttons */
   .hero-contact-info {
+    display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 18px;
+    margin-top: 16px;
   }
 
-  /* Stats cards - 3 vertical-column compact cards on mobile so all 3 fit without overflow */
+  /* Stats cards - 3 vertical-column compact cards on mobile */
   .stats-cards-grid {
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-    margin-top: 20px;
+    gap: 8px;
+    margin-top: 22px;
     width: 100%;
   }
   .stats-card {
+    display: flex;
     flex-direction: column;
     text-align: center;
+    align-items: center;
     justify-content: center;
-    padding: 10px 4px;
-    gap: 4px;
+    padding: 12px 6px;
+    gap: 5px;
     min-width: 0;
     overflow: hidden;
+    background: rgba(10, 15, 26, 0.65);
+    border: 1px solid rgba(107, 130, 255, 0.18);
+    border-radius: 14px;
   }
   .stats-card-icon {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
     margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
   }
   .stats-card-data {
     text-align: center;
     justify-items: center;
   }
-  .stats-num { font-size: 16px; line-height: 1; }
+  .stats-num { font-size: 17px; font-weight: 800; line-height: 1.1; color: #fff; }
   .stats-label {
-    font-size: 7px;
-    letter-spacing: 0.02em;
+    font-size: 7.5px;
+    font-family: "DM Mono", monospace;
+    letter-spacing: 0.04em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
     margin-top: 2px;
+    color: #7b88a2;
   }
   /* hero-copy must not exceed viewport width */
   .hero-copy {
@@ -2621,25 +2651,18 @@ a.hero-contact-item:hover {
     width: 100%;
     overflow: hidden;
   }
-  .hero-copy > p {
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 14px 0;
-    word-break: normal;
-    overflow-wrap: break-word;
-  }
 
   /* ── Lanyard ── */
   .lanyard-scene {
-    min-height: 500px;
-    margin-top: 20px;
-    margin-bottom: 0 !important; /* No negative margin so card is never buried */
+    min-height: 520px;
+    margin-top: 28px;
+    margin-bottom: 0 !important;
     width: 100%;
     overflow: visible;
   }
   .lanyard-rig {
-    transform: scale(0.68) !important;
-    transform-origin: center top;
+    transform: scale(0.72) !important;
+    transform-origin: 50% 0%;
   }
 
   /* ── Sections ── */

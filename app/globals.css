@@ -638,12 +638,9 @@ main {
   color: #717d94;
   font: 11px "DM Mono", monospace;
   transition: color 0.2s;
-  /* Prevent long email from overflowing on mobile */
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   max-width: 100%;
+  word-break: break-word;
 }
 
 .hero-contact-item svg {
@@ -2643,11 +2640,43 @@ a.hero-contact-item:hover {
     margin-top: 2px;
     color: #7b88a2;
   }
-  /* hero-copy must not exceed viewport width */
+  /* hero-copy must not clip its content */
   .hero-copy {
     max-width: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
+  }
+  .hero h1 {
+    font-size: clamp(1.9rem, 8vw, 2.9rem) !important;
+    letter-spacing: -0.035em !important;
+    line-height: 1.1 !important;
+    max-width: 100%;
+    width: 100%;
+    word-break: normal;
+  }
+  .hero-name span {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .hero-contact-item {
+    white-space: normal;
+    word-break: break-word;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .stats-label {
+    font-size: 7.5px;
+    font-family: "DM Mono", monospace;
+    letter-spacing: 0.02em;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    line-height: 1.15;
+    margin-top: 2px;
+    color: #7b88a2;
+    overflow: visible;
   }
 
   /* ── Lanyard ── */

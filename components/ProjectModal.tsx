@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, ExternalLink, Layers3, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Project } from "../data/portfolio";
 
@@ -38,12 +38,6 @@ export function ProjectModal({ project, onClose }: { project: Project | null; on
               <div className="chip-row">{project.stack.map((item) => <span className="chip" key={item}>{item}</span>)}</div>
               <div className="modal-stat-row"><div><strong>{project.images.length}</strong><span>screenshots</span></div><div><strong>{project.stack.length}</strong><span>technologies</span></div></div>
               {project.demo && <a className="button button-primary" href={project.demo} target="_blank" rel="noopener noreferrer">Open Live Project <ExternalLink size={16} /></a>}
-              {project.contextImages?.length ? (
-                <div className="context-assets">
-                  <div className="context-heading"><Layers3 size={14} /><span>Project structure / tech assets</span></div>
-                  <div className="context-grid">{project.contextImages.map((img, i) => <div className="context-image" key={img}><Image src={img} alt={`${project.name} structure or technology`} fill sizes="240px" /><span>{i + 1}</span></div>)}</div>
-                </div>
-              ) : null}
             </div>
 
             <div className="modal-gallery">

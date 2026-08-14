@@ -1,7 +1,7 @@
  "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ArrowDown, ArrowUpRight, ExternalLink, Github, Mail, MapPin, Sparkles, Layers3, MousePointer2, Send, CheckCircle2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { allProjects, certificates, featuredProjects, moreProjects, skills, type Project } from "../data/portfolio";
@@ -10,9 +10,9 @@ import { CertificateCarousel } from "./CertificateCarousel";
 import { AmbientBackground } from "./AmbientBackground";
 import { HeroVisual } from "./HeroVisual";
 
-const reveal = {
+const reveal: Variants = {
   hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: .65, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" as const } }
 };
 
 function ContactForm() {

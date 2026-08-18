@@ -8,11 +8,56 @@ import {
   X,
   Send,
   ExternalLink,
-  ArrowDown,
-  RotateCcw,
-  MessageSquare
+  ArrowDown
 } from "lucide-react";
 import type { AIMessage } from "@/lib/types";
+
+// Helper component to render formatted Markdown text (bold, bullet points, paragraphs) cleanly
+function FormattedAIMessage({ text }: { text: string }) {
+  if (!text) return null;
+
+  // Split by double linebreaks into paragraphs or bullet list blocks
+  const lines = text.split("\n");
+
+  return (
+    <div className="formatted-ai-text">
+      {lines.map((line, lineIdx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={lineIdx} className="ai-spacer" />;
+        }
+
+        // Bullet point line check
+        const isBullet = trimmed.startsWith("•") || trimmed.startsWith("-") || trimmed.startsWith("* ");
+        const contentText = isBullet ? trimmed.replace(/^([•\-*]\s*)/, "") : trimmed;
+
+        // Parse inline bold markdown **text**
+        const parts = contentText.split(/(\*\*.*?\*\*)/g);
+        const formattedInline = parts.map((part, pIdx) => {
+          if (part.startsWith("**") && part.endsWith("**")) {
+            return <strong key={pIdx}>{part.slice(2, -2)}</strong>;
+          }
+          return part;
+        });
+
+        if (isBullet) {
+          return (
+            <div key={lineIdx} className="ai-bullet-item">
+              <span className="ai-bullet-dot">•</span>
+              <span>{formattedInline}</span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={lineIdx} className="ai-paragraph">
+            {formattedInline}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
 
 export function VisitorAIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +85,7 @@ export function VisitorAIAssistant() {
 
   const quickQuestions = [
     "Ceritakan tentang proyek InstanPage",
-    "Apa teknologi utama yang dikuasai Daffa?",
+    "Apa keahlian utama Daffa?",
     "Apakah InstanPage dikerjakan sendiri?",
     "Proyek apa saja yang sudah live?",
     "Bagaimana cara menghubungi Daffa?"
@@ -118,7 +163,7 @@ export function VisitorAIAssistant() {
         </div>
       </motion.button>
 
-      {/* Floating Chat Modal */}
+      {/* Floating Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -127,6 +172,9 @@ export function VisitorAIAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 260, damping: 24 }}
+            role="dialog"
+            aria-modal="false"
+            aria-label="Ask Daffa AI Assistant"
           >
             {/* Header */}
             <div className="visitor-ai-header">
@@ -137,7 +185,7 @@ export function VisitorAIAssistant() {
                 </div>
                 <div>
                   <strong>Daffa AI</strong>
-                  <span>Portfolio Assistant • Grounded Facts</span>
+                  <span>Portfolio Assistant</span>
                 </div>
               </div>
               <button
@@ -159,7 +207,7 @@ export function VisitorAIAssistant() {
                     </div>
                   )}
                   <div className="visitor-ai-msg-content">
-                    <p style={{ whiteSpace: "pre-wrap" }}>{msg.content}</p>
+                    <FormattedAIMessage text={msg.content} />
 
                     {/* Interactive Action Buttons */}
                     {msg.actions && msg.actions.length > 0 && (
@@ -191,7 +239,9 @@ export function VisitorAIAssistant() {
                   </div>
                   <div className="visitor-ai-msg-content">
                     <div className="visitor-ai-typing">
-                      <span /><span /><span />
+                      <span />
+                      <span />
+                      <span />
                     </div>
                   </div>
                 </div>
@@ -199,7 +249,7 @@ export function VisitorAIAssistant() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Quick Prompt Chips (when few messages) */}
+            {/* Quick Prompt Chips */}
             {messages.length <= 2 && (
               <div className="visitor-ai-chips">
                 <small>Pertanyaan Cepat:</small>
@@ -218,7 +268,7 @@ export function VisitorAIAssistant() {
               </div>
             )}
 
-            {/* Input Bar */}
+            {/* Input Form */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -237,7 +287,7 @@ export function VisitorAIAssistant() {
                 type="submit"
                 disabled={loading || !input.trim()}
                 className="visitor-ai-send-btn"
-                aria-label="Send query"
+                aria-label="Send message to Daffa AI"
               >
                 <Send size={15} />
               </button>

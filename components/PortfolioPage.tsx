@@ -13,7 +13,9 @@ import {
   Layers3,
   MousePointer2,
   Send,
-  CheckCircle2
+  CheckCircle2,
+  Menu,
+  X
 } from "lucide-react";
 import { useState, useEffect, type FormEvent } from "react";
 import type { Project, Certificate, SkillGroup } from "@/lib/types";
@@ -115,6 +117,7 @@ export default function PortfolioPage({
     ]
   );
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     async function syncData() {
@@ -138,27 +141,40 @@ export default function PortfolioPage({
   const activeFeatured = featuredProjects[0] || projects[0];
 
   return (
-    <main>
+    <main className="portfolio-main-wrap">
       <AmbientBackground />
       <header className="navbar">
         <a className="brand" href="#home">
           <span>&lt;</span> daffa <span>/&gt;</span>
         </a>
-        <nav>
+        <nav className={`nav-links ${mobileNavOpen ? "open" : ""}`}>
           {["home", "about", "skills", "projects", "certificates", "contact"].map((item) => (
-            <a key={item} href={`#${item}`}>
+            <a
+              key={item}
+              href={`#${item}`}
+              onClick={() => setMobileNavOpen(false)}
+            >
               {item}
             </a>
           ))}
         </nav>
-        <a
-          className="github-link"
-          href="https://github.com/Daffa-exp"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Github size={15} /> GitHub
-        </a>
+        <div className="navbar-right">
+          <a
+            className="github-link"
+            href="https://github.com/Daffa-exp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Github size={15} /> <span>GitHub</span>
+          </a>
+          <button
+            className="mobile-nav-toggle"
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </header>
 
       <section id="home" className="hero section-shell">

@@ -508,11 +508,11 @@ function getDatabase(): DatabaseSchema {
   const { dataDir, dbFile } = getStoragePaths();
 
   try {
-    if (!fs.existsSync(dataDir)) {
+    if (!fs.existsSync(/*turbopackIgnore: true*/ dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
 
-    if (!fs.existsSync(dbFile)) {
+    if (!fs.existsSync(/*turbopackIgnore: true*/ dbFile)) {
       const initialMedia = scanExistingMedia();
       const schema: DatabaseSchema = {
         projects: INITIAL_PROJECTS,
@@ -531,7 +531,7 @@ function getDatabase(): DatabaseSchema {
       return schema;
     }
 
-    const raw = fs.readFileSync(dbFile, "utf8");
+    const raw = fs.readFileSync(/*turbopackIgnore: true*/ dbFile, "utf8");
     const data = JSON.parse(raw) as DatabaseSchema;
     if (!data.media || data.media.length === 0) {
       data.media = scanExistingMedia();
@@ -559,7 +559,7 @@ function saveDatabase(data: DatabaseSchema): void {
   const { dataDir, dbFile } = getStoragePaths();
 
   try {
-    if (!fs.existsSync(dataDir)) {
+    if (!fs.existsSync(/*turbopackIgnore: true*/ dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
     const tempFile = `${dbFile}.tmp.${Date.now()}`;

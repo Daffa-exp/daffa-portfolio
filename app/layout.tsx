@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     description:
       "Junior Software Developer & siswa SMK Negeri 1 Cisarua berfokus pada Software Development & Back-End Development.",
     images: ["/assets/photo.jpg"]
+  },
+  verification: {
+    google: "googled2ff0555a10011c6"
   }
 };
 

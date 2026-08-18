@@ -3,9 +3,13 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code2, Layers3, Sparkles } from "lucide-react";
-import type { Project } from "../data/portfolio";
+import type { Project } from "@/lib/types";
 
 export function HeroVisual({ project }: { project: Project }) {
+  const cover = project.coverImage || (project.galleryImages && project.galleryImages[0]) || "/assets/projects/foodmart/1.webp";
+  const name = project.title;
+  const screensCount = (project.galleryImages && project.galleryImages.length > 0) ? project.galleryImages.length : 1;
+
   return (
     <div className="hero-visual" aria-label="Interactive developer workspace preview">
       <div className="hero-visual-noise" />
@@ -21,7 +25,7 @@ export function HeroVisual({ project }: { project: Project }) {
       />
       <motion.div
         className="hero-core"
-        animate={{ scale: [1, 1.06, 1], opacity: [.7, .95, .7] }}
+        animate={{ scale: [1, 1.06, 1], opacity: [0.7, 0.95, 0.7] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
 
@@ -29,7 +33,7 @@ export function HeroVisual({ project }: { project: Project }) {
         className="workspace-panel"
         initial={{ opacity: 0, y: 24, rotateX: 8, rotateY: -8 }}
         animate={{ opacity: 1, y: 0, rotateX: 3, rotateY: -5 }}
-        transition={{ duration: 1, delay: .15, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ rotateX: 0, rotateY: -2, y: -7 }}
       >
         <div className="workspace-topbar">
@@ -38,9 +42,9 @@ export function HeroVisual({ project }: { project: Project }) {
           <Layers3 size={13} />
         </div>
         <div className="workspace-screen">
-          <Image src={project.images[0]} alt={`${project.name} project preview`} fill sizes="560px" priority />
+          <Image src={cover} alt={`${name} project preview`} fill sizes="560px" priority />
           <div className="screen-vignette" />
-          <div className="screen-label"><span>FEATURED PROJECT</span><strong>{project.name}</strong></div>
+          <div className="screen-label"><span>FEATURED PROJECT</span><strong>{name}</strong></div>
         </div>
         <div className="workspace-base">
           <div className="base-line base-line-wide" /><div className="base-line" /><div className="base-line" />
@@ -51,7 +55,7 @@ export function HeroVisual({ project }: { project: Project }) {
         className="identity-glass"
         initial={{ opacity: 0, x: 30, y: 25, rotate: 5 }}
         animate={{ opacity: 1, x: 0, y: 0, rotate: 3 }}
-        transition={{ duration: 1, delay: .38, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ y: -9, rotate: 1 }}
       >
         <div className="identity-shine" />
@@ -76,7 +80,7 @@ export function HeroVisual({ project }: { project: Project }) {
         animate={{ y: [0, 8, 0], rotate: [2, 1, 2] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       >
-        <span className="float-number">{project.images.length}</span>
+        <span className="float-number">{screensCount}</span>
         <div><strong>Project screens</strong><span>Open the full archive below</span></div>
       </motion.div>
 

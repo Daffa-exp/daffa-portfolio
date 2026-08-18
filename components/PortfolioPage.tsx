@@ -241,10 +241,10 @@ export default function PortfolioPage({
             <span className="eyebrow">ABOUT ME</span>
             <h2>Get to know me.</h2>
             <p>
-              Saya adalah pelajar yang memiliki minat besar di bidang Software Development, khususnya Back-End Development. Saya berpengalaman dalam membuat aplikasi web, desktop, dan mobile menggunakan berbagai teknologi modern.
+              <strong>Muhamad Daffa Permana</strong> adalah seorang <strong>Junior Software Developer</strong> yang sedang mengembangkan kemampuan di bidang <strong>Software Development</strong> dengan minat khusus pada <strong>Back-End Development</strong>.
             </p>
             <p>
-              Saya selalu ingin belajar hal-hal baru, memecahkan masalah, dan membangun solusi yang bermanfaat.
+              Saat ini menempuh pendidikan di <strong>SMK Negeri 1 Cisarua</strong> (Rekayasa Perangkat Lunak, 2024 – sekarang), serta memiliki pengalaman membangun aplikasi Web, Desktop, dan Mobile dalam konteks pembelajaran serta proyek mandiri maupun kolaboratif.
             </p>
           </motion.div>
           <motion.div className="timeline" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={reveal}>

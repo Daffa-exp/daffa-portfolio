@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://daffa-portfolio-sigma.vercel.app";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
@@ -9,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/daffa-studio", "/daffa-studio/*", "/api/studio/*", "/api/auth/*"]
       }
     ],
-    sitemap: "https://daffa-portfolio-sigma.vercel.app/sitemap.xml"
+    sitemap: `${siteUrl}/sitemap.xml`
   };
 }

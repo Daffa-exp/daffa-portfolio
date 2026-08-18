@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://daffa-portfolio.vercel.app";
+  const baseUrl = "https://daffa-portfolio-sigma.vercel.app";
   return [
     {
       url: `${baseUrl}/`,

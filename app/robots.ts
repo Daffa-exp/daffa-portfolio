@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/daffa-studio", "/daffa-studio/*", "/api/studio/*", "/api/auth/*"]
       }
     ],
-    sitemap: "https://daffa-portfolio.vercel.app/sitemap.xml"
+    sitemap: "https://daffa-portfolio-sigma.vercel.app/sitemap.xml"
   };
 }

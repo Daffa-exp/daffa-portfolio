@@ -1,9 +1,7 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 import type { Project, Certificate, MediaItem, ProfileInfo, SkillGroup, StudioHealth } from "./types";
-
-const DATA_DIR = path.join(process.cwd(), "data");
-const DB_FILE = path.join(DATA_DIR, "db.json");
 
 interface DatabaseSchema {
   projects: Project[];
@@ -415,78 +413,135 @@ const INITIAL_CERTIFICATES: Certificate[] = [
   }
 ];
 
+// Determine safe storage directory (use /tmp in serverless environments if cwd is read-only)
+function getStoragePaths() {
+  const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NODE_ENV === "production";
+  const localDataDir = path.join(process.cwd(), "data");
+  const localDbFile = path.join(localDataDir, "db.json");
+
+  // If local db exists or local directory is writable, use it
+  if (fs.existsSync(localDbFile)) {
+    return { dataDir: localDataDir, dbFile: localDbFile };
+  }
+
+  if (isServerless) {
+    const tmpDataDir = path.join(os.tmpdir(), "daffa-portfolio-data");
+    const tmpDbFile = path.join(tmpDataDir, "db.json");
+    return { dataDir: tmpDataDir, dbFile: tmpDbFile };
+  }
+
+  return { dataDir: localDataDir, dbFile: localDbFile };
+}
+
+let inMemoryCache: DatabaseSchema | null = null;
+
 function scanExistingMedia(): MediaItem[] {
   const mediaList: MediaItem[] = [];
-  const publicDir = path.join(process.cwd(), "public");
+  try {
+    const publicDir = path.join(process.cwd(), "public");
 
-  function scanDir(dir: string, basePublicPath: string) {
-    if (!fs.existsSync(dir)) return;
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name);
-      const urlPath = `${basePublicPath}/${entry.name}`.replace(/\\/g, "/");
-      if (entry.isDirectory()) {
-        scanDir(fullPath, urlPath);
-      } else if (/\.(webp|jpg|jpeg|png|svg|gif)$/i.test(entry.name)) {
-        const stat = fs.statSync(fullPath);
-        const ext = path.extname(entry.name).replace(".", "").toLowerCase();
-        mediaList.push({
-          id: `media-${Buffer.from(urlPath).toString("base64url").slice(0, 12)}`,
-          filename: entry.name,
-          url: urlPath,
-          type: `image/${ext === "jpg" ? "jpeg" : ext}`,
-          size: stat.size,
-          alt: entry.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
-          createdAt: stat.birthtime.toISOString()
-        });
+    function scanDir(dir: string, basePublicPath: string) {
+      if (!fs.existsSync(dir)) return;
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        const urlPath = `${basePublicPath}/${entry.name}`.replace(/\\/g, "/");
+        if (entry.isDirectory()) {
+          scanDir(fullPath, urlPath);
+        } else if (/\.(webp|jpg|jpeg|png|svg|gif)$/i.test(entry.name)) {
+          try {
+            const stat = fs.statSync(fullPath);
+            const ext = path.extname(entry.name).replace(".", "").toLowerCase();
+            mediaList.push({
+              id: `media-${Buffer.from(urlPath).toString("base64url").slice(0, 12)}`,
+              filename: entry.name,
+              url: urlPath,
+              type: `image/${ext === "jpg" ? "jpeg" : ext}`,
+              size: stat.size,
+              alt: entry.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+              createdAt: stat.birthtime ? stat.birthtime.toISOString() : new Date().toISOString()
+            });
+          } catch {
+            // ignore stat failure
+          }
+        }
       }
     }
+
+    const assetsDir = path.join(publicDir, "assets");
+    if (fs.existsSync(assetsDir)) {
+      scanDir(assetsDir, "/assets");
+    }
+
+    const uploadsDir = path.join(publicDir, "uploads");
+    if (fs.existsSync(uploadsDir)) {
+      scanDir(uploadsDir, "/uploads");
+    }
+  } catch (e) {
+    console.warn("Media scanning skipped in restricted environment:", e);
   }
 
-  const assetsDir = path.join(publicDir, "assets");
-  if (fs.existsSync(assetsDir)) {
-    scanDir(assetsDir, "/assets");
-  }
-
-  const uploadsDir = path.join(publicDir, "uploads");
-  if (fs.existsSync(uploadsDir)) {
-    scanDir(uploadsDir, "/uploads");
+  if (mediaList.length === 0) {
+    // Return standard assets list as fallback
+    return [
+      { id: "media-photo", filename: "photo.jpg", url: "/assets/photo.jpg", type: "image/jpeg", size: 540000, createdAt: new Date().toISOString() },
+      { id: "media-daffa", filename: "daffa.jpg", url: "/assets/daffa.jpg", type: "image/jpeg", size: 540000, createdAt: new Date().toISOString() },
+      ...Array.from({ length: 7 }, (_, i) => ({
+        id: `media-cert-${i + 1}`,
+        filename: `cert${i + 1}.jpg`,
+        url: `/assets/certs/cert${i + 1}.jpg`,
+        type: "image/jpeg",
+        size: 90000,
+        createdAt: new Date().toISOString()
+      }))
+    ];
   }
 
   return mediaList;
 }
 
 function getDatabase(): DatabaseSchema {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (inMemoryCache) {
+    return inMemoryCache;
   }
 
-  if (!fs.existsSync(DB_FILE)) {
-    const initialMedia = scanExistingMedia();
-    const schema: DatabaseSchema = {
-      projects: INITIAL_PROJECTS,
-      certificates: INITIAL_CERTIFICATES,
-      media: initialMedia,
-      profile: INITIAL_PROFILE,
-      skills: INITIAL_SKILLS,
-      version: 1
-    };
-    fs.writeFileSync(DB_FILE, JSON.stringify(schema, null, 2), "utf8");
-    return schema;
-  }
+  const { dataDir, dbFile } = getStoragePaths();
 
   try {
-    const raw = fs.readFileSync(DB_FILE, "utf8");
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    if (!fs.existsSync(dbFile)) {
+      const initialMedia = scanExistingMedia();
+      const schema: DatabaseSchema = {
+        projects: INITIAL_PROJECTS,
+        certificates: INITIAL_CERTIFICATES,
+        media: initialMedia,
+        profile: INITIAL_PROFILE,
+        skills: INITIAL_SKILLS,
+        version: 1
+      };
+      try {
+        fs.writeFileSync(dbFile, JSON.stringify(schema, null, 2), "utf8");
+      } catch (writeErr) {
+        console.warn("Read-only filesystem detected, using in-memory store:", writeErr);
+      }
+      inMemoryCache = schema;
+      return schema;
+    }
+
+    const raw = fs.readFileSync(dbFile, "utf8");
     const data = JSON.parse(raw) as DatabaseSchema;
-    // ensure media is synced if empty
     if (!data.media || data.media.length === 0) {
       data.media = scanExistingMedia();
       saveDatabase(data);
     }
+    inMemoryCache = data;
     return data;
   } catch (err) {
-    console.error("Error reading database file, using fallback:", err);
-    return {
+    console.warn("Database disk access error, falling back to memory store:", err);
+    const fallbackSchema: DatabaseSchema = {
       projects: INITIAL_PROJECTS,
       certificates: INITIAL_CERTIFICATES,
       media: scanExistingMedia(),
@@ -494,16 +549,25 @@ function getDatabase(): DatabaseSchema {
       skills: INITIAL_SKILLS,
       version: 1
     };
+    inMemoryCache = fallbackSchema;
+    return fallbackSchema;
   }
 }
 
 function saveDatabase(data: DatabaseSchema): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  inMemoryCache = data;
+  const { dataDir, dbFile } = getStoragePaths();
+
+  try {
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    const tempFile = `${dbFile}.tmp.${Date.now()}`;
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
+    fs.renameSync(tempFile, dbFile);
+  } catch (err) {
+    console.warn("Could not persist database to disk (serverless runtime memory active):", err);
   }
-  const tempFile = `${DB_FILE}.tmp.${Date.now()}`;
-  fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
-  fs.renameSync(tempFile, DB_FILE);
 }
 
 // ----------------- DB API -----------------

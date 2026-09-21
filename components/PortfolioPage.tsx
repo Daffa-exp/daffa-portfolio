@@ -134,6 +134,9 @@ function SiteNav() {
           <a className="btn btn--primary btn--sm" href="#contact">
             Contact
           </a>
+          <a className="nav__studio-link" href="/daffa-studio" title="Studio Admin">
+            <Sparkles size={14} aria-hidden="true" />
+          </a>
           <button
             type="button"
             className="nav__toggle"
@@ -404,7 +407,17 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
       <section id="about" className="band band--light">
         <div className="wrap about">
           <Reveal className="about__head">
-            <p className="kicker">About</p>
+            <div className="about__photo-wrap">
+              <Image
+                src="/assets/photo.jpg"
+                alt="Muhamad Daffa Permana"
+                width={280}
+                height={280}
+                className="about__photo"
+                priority
+              />
+            </div>
+            <p className="kicker" style={{ marginTop: "24px" }}>About</p>
             <h2 className="display">Full-stack development, with a back-end mindset.</h2>
           </Reveal>
 

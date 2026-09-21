@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Code2, Terminal, Sparkles, Check, Copy } from "lucide-react";
+import { ArrowUpRight, Terminal, Check, Copy, Sparkles, Layers } from "lucide-react";
 import { useState } from "react";
 import type { Project } from "@/lib/types";
 
@@ -11,16 +11,15 @@ export function HeroVisual({ project }: { project: Project }) {
   const cover = project.coverImage || (project.galleryImages && project.galleryImages[0]) || "/assets/projects/foodmart/1.webp";
   const name = project.title;
 
-  const codeSnippet = `// AgentQL-inspired Developer Profile
+  const codeSnippet = `// Huly-style Developer Profile
 import { Developer } from "@daffa/core";
 
 export const daffa = new Developer({
   name: "Muhamad Daffa Permana",
   role: "Full-Stack Developer",
-  focus: ["Backend Architecture", "Modern Web", "API Systems"],
-  stack: ["Next.js", "Node.js", "Express", "Prisma", "Docker"],
-  education: "SMK Negeri 1 Cisarua (RPL)",
-  status: "available_for_collaboration"
+  school: "SMKN 1 Cisarua (RPL)",
+  stack: ["Next.js", "Express.js", "Node.js", "Prisma"],
+  status: "open_for_collaboration"
 });`;
 
   const copyCode = () => {
@@ -30,43 +29,42 @@ export const daffa = new Developer({
   };
 
   return (
-    <div className="agentql-hero-visual" aria-label="Interactive AgentQL command-center developer visual">
-      {/* Aurora Ambient Glows */}
-      <div className="agentql-visual-aurora-purple" />
-      <div className="agentql-visual-plasma-pink" />
+    <div className="huly-hero-visual" aria-label="Huly-style cosmic workspace developer visual">
+      {/* Warm corner glow for depth */}
+      <div className="huly-visual-warm-glow" />
 
-      {/* Main Layer: Code Snippet Block (Signature AgentQL devtool component) */}
+      {/* Layer 1: Code / Profile Panel */}
       <motion.div
-        className="agentql-code-panel"
-        initial={{ opacity: 0, y: 20, rotateX: 6, rotateY: -6 }}
-        animate={{ opacity: 1, y: 0, rotateX: 2, rotateY: -3 }}
+        className="huly-code-panel"
+        initial={{ opacity: 0, y: 20, rotateX: 4, rotateY: -4 }}
+        animate={{ opacity: 1, y: 0, rotateX: 2, rotateY: -2 }}
         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ rotateX: 0, rotateY: 0, y: -4 }}
       >
-        <div className="agentql-code-header">
-          <div className="agentql-code-dots">
+        <div className="huly-code-header">
+          <div className="huly-code-dots">
             <span />
             <span />
             <span />
           </div>
-          <div className="agentql-code-tab">
-            <Terminal size={12} className="text-frosted" />
+          <div className="huly-code-tab">
+            <Terminal size={12} className="text-iris" />
             <span>daffa.profile.ts</span>
           </div>
           <button
-            className="agentql-copy-btn"
+            className="huly-copy-btn"
             onClick={copyCode}
             aria-label="Copy code"
             title="Copy snippet"
           >
-            {copied ? <Check size={13} className="text-emerald" /> : <Copy size={13} />}
+            {copied ? <Check size={13} className="text-ember" /> : <Copy size={13} />}
           </button>
         </div>
 
-        <div className="agentql-code-body">
-          <pre className="agentql-code-pre">
+        <div className="huly-code-body">
+          <pre className="huly-code-pre">
             <code>
-              <span className="code-comment">{"// Full-Stack Developer Profile\n"}</span>
+              <span className="code-comment">{"// Huly Cosmic Workspace\n"}</span>
               <span className="code-keyword">{"import "}</span>
               <span className="code-plain">{"{ Developer } "}</span>
               <span className="code-keyword">{"from "}</span>
@@ -84,8 +82,8 @@ export const daffa = new Developer({
               <span className="code-plain">{"[\n"}</span>
               <span className="code-indent-2">
                 <span className="code-string">{'"Next.js"'}</span>,{" "}
-                <span className="code-string">{'"Express"'}</span>,{" "}
-                <span className="code-string">{'"Node.js"'}</span>\n
+                <span className="code-string">{'"Express.js"'}</span>,{" "}
+                <span className="code-string">{'"Prisma"'}</span>\n
               </span>
               <span className="code-indent">{"  ],\n"}</span>
               <span className="code-indent">{"  school: "}</span>
@@ -96,19 +94,19 @@ export const daffa = new Developer({
         </div>
       </motion.div>
 
-      {/* Layer 2: Featured Project Window */}
+      {/* Layer 2: Featured Product Screenshot Frame (12px radius, hairline border, shadow) */}
       <motion.div
-        className="agentql-preview-card"
+        className="huly-screenshot-frame"
         initial={{ opacity: 0, x: 20, y: 30 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -6, scale: 1.02 }}
+        whileHover={{ y: -6, scale: 1.015 }}
       >
-        <div className="agentql-preview-topbar">
-          <span className="agentql-preview-tag">SPOTLIGHT PROJECT</span>
-          <span className="agentql-preview-title">{name}</span>
+        <div className="huly-screenshot-topbar">
+          <span className="huly-tag huly-tag-iris">SPOTLIGHT</span>
+          <span className="huly-screenshot-title">{name}</span>
         </div>
-        <div className="agentql-preview-img-wrap">
+        <div className="huly-screenshot-img-wrap">
           <Image
             src={cover}
             alt={`${name} project screenshot`}
@@ -121,13 +119,13 @@ export const daffa = new Developer({
 
       {/* Layer 3: Floating Developer Token Badge */}
       <motion.div
-        className="agentql-token-badge"
+        className="huly-token-badge"
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -5 }}
+        whileHover={{ y: -4 }}
       >
-        <div className="agentql-token-photo">
+        <div className="huly-token-photo">
           <Image
             src="/assets/photo.jpg"
             alt="Muhamad Daffa Permana"
@@ -135,18 +133,19 @@ export const daffa = new Developer({
             sizes="80px"
           />
         </div>
-        <div className="agentql-token-info">
-          <div className="agentql-token-status">
-            <span className="status-live-dot" />
-            <span className="agentql-token-role">Full-Stack Dev</span>
+        <div className="huly-token-info">
+          <div className="huly-token-status">
+            <span className="huly-status-dot" />
+            <span className="huly-token-role">Full-Stack Developer</span>
           </div>
-          <strong className="agentql-token-name">Daffa Permana</strong>
-          <span className="agentql-token-sub">SMKN 1 Cisarua</span>
+          <strong className="huly-token-name">Daffa Permana</strong>
+          <span className="huly-token-sub">SMKN 1 Cisarua · RPL</span>
         </div>
-        <div className="agentql-token-arrow">
+        <div className="huly-token-arrow">
           <ArrowUpRight size={14} />
         </div>
       </motion.div>
     </div>
   );
 }
+

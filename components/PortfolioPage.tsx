@@ -407,7 +407,7 @@ export default function PortfolioPage({
                   : [project.coverImage || "/assets/projects/foodmart/1.webp"];
 
                 return (
-                  <motion.button
+                  <motion.div
                     className="more-card"
                     key={project.id}
                     onClick={() => setSelectedProject(project)}
@@ -415,36 +415,52 @@ export default function PortfolioPage({
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.1 }}
                     variants={reveal}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelectedProject(project);
+                      }
+                    }}
+                    aria-label={`Open case study for ${project.title}`}
                   >
-                    <div className="more-image">
-                      {gallery.slice(0, 3).map((img, i) => (
-                        <div className={`more-image-layer layer-${i}`} key={img}>
-                          <Image
-                            src={img}
-                            alt={i === 0 ? project.title : ""}
-                            fill
-                            sizes="(max-width: 700px) 90vw, 300px"
-                          />
-                        </div>
-                      ))}
-                      <span className="more-count">
-                        {gallery.length} {gallery.length === 1 ? "view" : "views"}
+                    <div className="more-card-thumb">
+                      <Image
+                        src={gallery[0]}
+                        alt={`${project.title} screenshot`}
+                        fill
+                        sizes="(max-width: 768px) 94vw, 380px"
+                        className="more-card-img"
+                      />
+                      <span className="more-screens-badge">
+                        <Layers3 size={11} /> {gallery.length} screens
                       </span>
                     </div>
-                    <div className="more-meta">
-                      <div className="more-category">{project.category}</div>
-                      <strong>{project.title}</strong>
-                      <span>{project.tagline}</span>
-                      <div className="more-stack">
-                        {project.technologies.slice(0, 3).map((item) => (
-                          <i key={item}>{item}</i>
-                        ))}
+                    <div className="more-card-content">
+                      <div className="more-card-top">
+                        <span className="more-category-badge">{project.category}</span>
                       </div>
-                      <small>
-                        Open full gallery <ArrowUpRight size={12} />
-                      </small>
+                      <h3 className="more-card-title">{project.title}</h3>
+                      <p className="more-card-desc">{project.tagline}</p>
+                      <div className="more-card-stack">
+                        {project.technologies.slice(0, 3).map((item) => (
+                          <span className="more-tech-pill" key={item}>
+                            {item}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="more-tech-pill more-tech-plus">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
+                      </div>
+                      <div className="more-card-action">
+                        <span>View Case Study</span>
+                        <ArrowUpRight size={14} />
+                      </div>
                     </div>
-                  </motion.button>
+                  </motion.div>
                 );
               })}
             </div>

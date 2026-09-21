@@ -1,14 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, X, ExternalLink } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ExternalLink, Maximize2, Award } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { Certificate } from "@/lib/types";
 
 export function CertificateCarousel({ certificates }: { certificates: Certificate[] }) {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState<Certificate | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const list = certificates && certificates.length > 0 ? certificates : [];
   const move = (dir: number) => {
@@ -18,97 +19,190 @@ export function CertificateCarousel({ certificates }: { certificates: Certificat
 
   useEffect(() => {
     if (list.length <= 1) return;
-    const timer = window.setInterval(() => move(1), 5000);
+    const timer = window.setInterval(() => move(1), 6000);
     return () => window.clearInterval(timer);
-  }, [list.length]);
+  }, [list.length, active]);
 
   if (list.length === 0) return null;
   const currentCert = list[active] || list[0];
 
-  return (
-    <>
-      <div className="certificate-wrap">
-        <button className="carousel-arrow" onClick={() => move(-1)} aria-label="Previous certificate">
-          <ChevronLeft size={18} />
-        </button>
-        <div className="certificate-stage">
-          {list.map((cert, i) => {
-            const delta = (i - active + list.length) % list.length;
-            const offset = delta === 0 ? 0 : delta === 1 ? 1 : delta === list.length - 1 ? -1 : 2;
-            const isCenter = offset === 0;
-            const img = cert.imageUrl || "/assets/certs/cert1.jpg";
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
 
-            return (
-              <motion.button
-                key={cert.id || img}
-                className={`certificate-card ${isCenter ? "center" : ""}`}
-                animate={{
-                  x: `${offset * 34}%`,
-                  scale: isCenter ? 1 : 0.78,
-                  opacity: isCenter ? 1 : 0.46,
-                  rotateY: offset * -12,
-                  filter: isCenter ? "blur(0px)" : "blur(1.2px)",
-                  zIndex: isCenter ? 5 : 2
-                }}
-                transition={{ type: "spring", stiffness: 120, damping: 18 }}
-                onClick={() => (isCenter ? setOpen(cert) : setActive(i))}
-                aria-label={`View certificate ${cert.title}`}
-              >
-                <Image src={img} alt={cert.title} fill sizes="(max-width: 700px) 65vw, 360px" />
-              </motion.button>
-            );
-          })}
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (Math.abs(diff) > 35) {
+      if (diff > 0) {
+        // Swipe left -> next
+        move(1);
+      } else {
+        // Swipe right -> prev
+        move(-1);
+      }
+    }
+    touchStartX.current = null;
+  };
+
+  return (
+    <div className="cert-section-container">
+      {/* Main Certificate Showcase Frame */}
+      <div
+        className="cert-showcase-stage"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <button
+          className="cert-nav-btn cert-nav-left"
+          onClick={() => move(-1)}
+          aria-label="Previous certificate"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        <div className="cert-card-container">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentCert.id || currentCert.imageUrl}
+              className="cert-main-card"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              onClick={() => setOpen(currentCert)}
+            >
+              <div className="cert-image-frame">
+                <Image
+                  src={currentCert.imageUrl || "/assets/certs/cert1.jpg"}
+                  alt={currentCert.title}
+                  fill
+                  sizes="(max-width: 768px) 92vw, 680px"
+                  priority
+                  className="cert-img"
+                />
+                <div className="cert-expand-overlay">
+                  <Maximize2 size={16} />
+                  <span>Tap to expand</span>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
-        <button className="carousel-arrow" onClick={() => move(1)} aria-label="Next certificate">
-          <ChevronRight size={18} />
+
+        <button
+          className="cert-nav-btn cert-nav-right"
+          onClick={() => move(1)}
+          aria-label="Next certificate"
+        >
+          <ChevronRight size={20} />
         </button>
       </div>
 
-      <div className="certificate-caption">
-        <strong>{currentCert.title}</strong>
-        <span>
-          {currentCert.issuer} · {currentCert.issueDate}
-        </span>
-        {currentCert.description && <p className="cert-subdesc">{currentCert.description}</p>}
-        <div className="cert-caption-action">
-          <small>Click certificate to expand preview</small>
+      {/* Certificate Meta & Caption */}
+      <div className="cert-meta-box">
+        <div className="cert-meta-header">
+          <div className="cert-counter-pill">
+            <Award size={13} />
+            <span>
+              {String(active + 1).padStart(2, "0")} / {String(list.length).padStart(2, "0")}
+            </span>
+          </div>
+          <div className="cert-dots-indicator">
+            {list.map((_, i) => (
+              <button
+                key={i}
+                className={`cert-dot ${i === active ? "active" : ""}`}
+                onClick={() => setActive(i)}
+                aria-label={`Go to certificate ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <h3 className="cert-title">{currentCert.title}</h3>
+        <p className="cert-issuer">
+          <strong>{currentCert.issuer}</strong> • <span>{currentCert.issueDate}</span>
+        </p>
+
+        {currentCert.description && (
+          <p className="cert-description">{currentCert.description}</p>
+        )}
+
+        <div className="cert-actions-row">
+          <button
+            className="button button-ghost small"
+            onClick={() => setOpen(currentCert)}
+          >
+            <Maximize2 size={13} /> Lihat Fullscreen
+          </button>
+
           {currentCert.credentialUrl && (
             <a
               href={currentCert.credentialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="cert-verify-link"
-              onClick={(e) => e.stopPropagation()}
+              className="button button-primary small"
             >
-              Verify Credential <ExternalLink size={12} />
+              Verifikasi Kredensial <ExternalLink size={13} />
             </a>
           )}
         </div>
       </div>
 
+      {/* Fullscreen Lightbox */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="certificate-lightbox"
+            className="fullscreen-lightbox"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setOpen(null)}
           >
-            <motion.div
-              className="certificate-large"
-              initial={{ scale: 0.94, y: 12 }}
-              animate={{ scale: 1, y: 0 }}
-              onClick={(e) => e.stopPropagation()}
+            <button
+              className="fullscreen-close-btn"
+              onClick={() => setOpen(null)}
+              aria-label="Close certificate"
             >
-              <button className="icon-button lightbox-close" onClick={() => setOpen(null)} aria-label="Close">
-                <X size={18} />
-              </button>
-              <Image src={open.imageUrl || "/assets/certs/cert1.jpg"} alt={open.title} fill sizes="90vw" />
-            </motion.div>
+              <X size={20} />
+            </button>
+            <div
+              className="fullscreen-stage"
+              onClick={(e) => e.stopPropagation()}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              <Image
+                src={open.imageUrl || "/assets/certs/cert1.jpg"}
+                alt={open.title}
+                fill
+                sizes="100vw"
+                className="fullscreen-img"
+              />
+              {list.length > 1 && (
+                <>
+                  <button
+                    className="gallery-arrow left"
+                    onClick={() => move(-1)}
+                    aria-label="Previous certificate"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button
+                    className="gallery-arrow right"
+                    onClick={() => move(1)}
+                    aria-label="Next certificate"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

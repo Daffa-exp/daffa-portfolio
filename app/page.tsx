@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export default function Home() {
-  const projects = db.getProjects();
+  const projects = db.getPublicProjects();
   const certificates = db.getCertificates();
   const skills = db.getSkills();
 

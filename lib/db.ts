@@ -15,11 +15,11 @@ interface DatabaseSchema {
 const INITIAL_PROFILE: ProfileInfo = {
   name: "Daffa",
   fullName: "Muhamad Daffa Permana",
-  role: "Junior Software Developer",
-  bio: "Pelajar dengan minat mendalam di Software Development, khususnya Back-End Development, serta pengalaman membangun aplikasi web, desktop, dan mobile menggunakan teknologi modern.",
+  role: "Full-Stack Developer",
+  bio: "Pelajar & Full-Stack Developer dengan fokus pada Software Development, arsitektur Back-End, dan Web Modern, serta pengalaman membangun aplikasi web, desktop, dan mobile.",
   about: [
-    "Saya adalah pelajar yang memiliki minat besar di bidang Software Development, khususnya Back-End Development. Saya berpengalaman dalam membuat aplikasi web, desktop, dan mobile menggunakan berbagai teknologi modern.",
-    "Saya selalu ingin belajar hal-hal baru, memecahkan masalah, dan membangun solusi yang bermanfaat."
+    "Saya adalah Full-Stack Developer yang memiliki dedikasi besar di bidang Software Development, khususnya arsitektur Back-End dan Web Modern. Saya berpengalaman dalam merancang dan membangun aplikasi web, desktop, dan mobile menggunakan berbagai teknologi modern.",
+    "Saya selalu berfokus pada penulisan kode yang bersih, pemecahan masalah teknis, dan perancangan sistem yang efisien dan bermanfaat."
   ],
   location: "Parongpong, Jawa Barat, Indonesia",
   email: "permanadaffa89@gmail.com",
@@ -194,6 +194,7 @@ const INITIAL_PROJECTS: Project[] = [
     coverImage: "/assets/projects/galerifoto/1.webp",
     galleryImages: Array.from({ length: 4 }, (_, i) => `/assets/projects/galerifoto/${i + 1}.webp`),
     featured: false,
+    hidden: true,
     order: 7,
     createdAt: "2023-11-10T00:00:00.000Z",
     updatedAt: "2023-11-10T00:00:00.000Z"
@@ -212,6 +213,7 @@ const INITIAL_PROJECTS: Project[] = [
     coverImage: "/assets/projects/phonebook/1.webp",
     galleryImages: Array.from({ length: 5 }, (_, i) => `/assets/projects/phonebook/${i + 1}.webp`),
     featured: false,
+    hidden: true,
     order: 8,
     createdAt: "2023-10-05T00:00:00.000Z",
     updatedAt: "2023-10-05T00:00:00.000Z"
@@ -266,6 +268,7 @@ const INITIAL_PROJECTS: Project[] = [
     coverImage: "/assets/projects/jersey/1.webp",
     galleryImages: Array.from({ length: 2 }, (_, i) => `/assets/projects/jersey/${i + 1}.webp`),
     featured: false,
+    hidden: true,
     order: 11,
     createdAt: "2023-09-15T00:00:00.000Z",
     updatedAt: "2023-09-15T00:00:00.000Z"
@@ -284,6 +287,7 @@ const INITIAL_PROJECTS: Project[] = [
     coverImage: "/assets/projects/webpaslon/1.webp",
     galleryImages: Array.from({ length: 2 }, (_, i) => `/assets/projects/webpaslon/${i + 1}.webp`),
     featured: false,
+    hidden: true,
     order: 12,
     createdAt: "2023-11-20T00:00:00.000Z",
     updatedAt: "2023-11-20T00:00:00.000Z"
@@ -320,6 +324,7 @@ const INITIAL_PROJECTS: Project[] = [
     coverImage: "/assets/projects/girlfriend/1.webp",
     galleryImages: Array.from({ length: 3 }, (_, i) => `/assets/projects/girlfriend/${i + 1}.webp`),
     featured: false,
+    hidden: true,
     order: 14,
     createdAt: "2023-12-01T00:00:00.000Z",
     updatedAt: "2023-12-01T00:00:00.000Z"
@@ -574,9 +579,14 @@ function saveDatabase(data: DatabaseSchema): void {
 
 export const db = {
   // Projects
-  getProjects(): Project[] {
+  getProjects(includeHidden: boolean = true): Project[] {
     const data = getDatabase();
-    return [...data.projects].sort((a, b) => a.order - b.order);
+    const list = includeHidden ? data.projects : data.projects.filter((p) => !p.hidden);
+    return [...list].sort((a, b) => a.order - b.order);
+  },
+
+  getPublicProjects(): Project[] {
+    return this.getProjects(false);
   },
 
   getProjectById(id: string): Project | undefined {

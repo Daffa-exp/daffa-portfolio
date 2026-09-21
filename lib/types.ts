@@ -19,6 +19,7 @@ export interface Project {
   coverImage: string;
   galleryImages: string[];
   featured: boolean;
+  hidden?: boolean;
   order: number;
   createdAt: string;
   updatedAt: string;

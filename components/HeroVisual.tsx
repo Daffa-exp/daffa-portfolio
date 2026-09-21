@@ -62,7 +62,7 @@ export function HeroVisual({ project }: { project: Project }) {
         <div className="identity-header"><span>DEVELOPER ID</span><span className="identity-status" /></div>
         <div className="identity-photo"><Image src="/assets/photo.jpg" alt="Muhamad Daffa Permana" fill sizes="230px" /></div>
         <div className="identity-name">Muhamad Daffa<br />Permana</div>
-        <div className="identity-role">Junior Software Developer</div>
+        <div className="identity-role">Full-Stack Developer</div>
         <div className="identity-footer"><Code2 size={13} /><span>DAFFA·EXP</span><ArrowUpRight size={13} /></div>
       </motion.div>
 

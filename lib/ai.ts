@@ -193,7 +193,7 @@ function answerWithLocalRAG(query: string): { text: string; actions: AIMessage["
     actions.push({ label: "Lihat Proyek", url: "#projects", type: "scroll" });
     actions.push({ label: "Hubungi Daffa", url: "#contact", type: "scroll" });
     return {
-      text: `Halo! Saya **Daffa AI**, asisten portofolio **Muhamad Daffa Permana**.\n\nDaffa adalah seorang **Junior Software Developer** dengan fokus pada Back-End Development serta pengalaman membangun aplikasi web modern (Next.js, Express, React), aplikasi desktop (Electron), mobile (Flutter), dan AI/Computer Vision (Python, OpenCV).\n\nAda yang ingin Anda ketahui tentang proyek, keahlian, atau sertifikasi Daffa?`,
+      text: `Halo! Saya **Daffa AI**, asisten portofolio **Muhamad Daffa Permana**.\n\nDaffa adalah seorang **Full-Stack Developer** dengan fokus pada Software Development, arsitektur Back-End, dan Web Modern (Next.js, Express, React), aplikasi desktop (Electron), mobile (Flutter), dan AI/Computer Vision (Python, OpenCV).\n\nAda yang ingin Anda ketahui tentang proyek, keahlian, atau sertifikasi Daffa?`,
       actions
     };
   }

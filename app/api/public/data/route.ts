@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const projects = db.getProjects();
+  const projects = db.getPublicProjects();
   const certificates = db.getCertificates();
   const profile = db.getProfile();
   const skills = db.getSkills();

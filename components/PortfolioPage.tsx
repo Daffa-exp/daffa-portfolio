@@ -187,10 +187,10 @@ export default function PortfolioPage({
               <span>Permana</span>
             </h1>
             <div className="role-line">
-              <span className="status-dot" /> Junior Software Developer
+              <span className="status-dot" /> Full-Stack Developer
             </div>
             <p>
-              Pelajar dengan minat mendalam di Software Development, khususnya Back-End Development, serta pengalaman membangun aplikasi web, desktop, dan mobile menggunakan teknologi modern.
+              Pelajar & Full-Stack Developer dengan fokus pada Software Development, arsitektur Back-End, dan Web Modern, serta pengalaman membangun aplikasi web, desktop, dan mobile.
             </p>
             <div className="button-row">
               <a className="button button-primary" href="#projects">
@@ -241,7 +241,7 @@ export default function PortfolioPage({
             <span className="eyebrow">ABOUT ME</span>
             <h2>Get to know me.</h2>
             <p>
-              <strong>Muhamad Daffa Permana</strong> adalah seorang <strong>Junior Software Developer</strong> yang sedang mengembangkan kemampuan di bidang <strong>Software Development</strong> dengan minat khusus pada <strong>Back-End Development</strong>.
+              <strong>Muhamad Daffa Permana</strong> adalah seorang <strong>Full-Stack Developer</strong> yang berfokus pada <strong>Software Development</strong>, arsitektur <strong>Back-End</strong>, dan pengembangan <strong>Web Modern</strong>.
             </p>
             <p>
               Saat ini menempuh pendidikan di <strong>SMK Negeri 1 Cisarua</strong> (Rekayasa Perangkat Lunak, 2024 – sekarang), serta memiliki pengalaman membangun aplikasi Web, Desktop, dan Mobile dalam konteks pembelajaran serta proyek mandiri maupun kolaboratif.

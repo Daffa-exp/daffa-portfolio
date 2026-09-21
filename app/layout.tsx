@@ -6,12 +6,13 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://daffa-portfolio-sig
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Muhamad Daffa Permana — Junior Software Developer",
+  title: "Muhamad Daffa Permana — Full-Stack Developer",
   description:
-    "Portfolio resmi Muhamad Daffa Permana, Junior Software Developer dan siswa Rekayasa Perangkat Lunak di SMK Negeri 1 Cisarua. Berfokus pada Software Development dan Back-End Development (Node.js, Express, Next.js, Python, PHP, MySQL, Prisma, Docker).",
+    "Portfolio resmi Muhamad Daffa Permana, Full-Stack Developer dan siswa Rekayasa Perangkat Lunak di SMK Negeri 1 Cisarua. Berfokus pada Software Development, Back-End, dan Web Modern (Node.js, Express, Next.js, React, Python, PHP, MySQL, Prisma, Docker).",
   keywords: [
     "Muhamad Daffa Permana",
     "Muhamad Daffa Permana SMKN 1 Cisarua",
+    "Full-Stack Developer",
     "Junior Software Developer",
     "SMK Negeri 1 Cisarua",
     "Software Development",
@@ -37,9 +38,9 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: "Muhamad Daffa Permana — Junior Software Developer",
+    title: "Muhamad Daffa Permana — Full-Stack Developer",
     description:
-      "Portfolio resmi Muhamad Daffa Permana, Junior Software Developer & siswa SMK Negeri 1 Cisarua berfokus pada Software Development & Back-End Development.",
+      "Portfolio resmi Muhamad Daffa Permana, Full-Stack Developer & siswa SMK Negeri 1 Cisarua berfokus pada Software Development, Back-End, dan Web Modern.",
     url: siteUrl,
     siteName: "Muhamad Daffa Permana Portfolio",
     locale: "id_ID",
@@ -49,15 +50,15 @@ export const metadata: Metadata = {
         url: "/assets/photo.jpg",
         width: 800,
         height: 800,
-        alt: "Muhamad Daffa Permana — Junior Software Developer"
+        alt: "Muhamad Daffa Permana — Full-Stack Developer"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muhamad Daffa Permana — Junior Software Developer",
+    title: "Muhamad Daffa Permana — Full-Stack Developer",
     description:
-      "Junior Software Developer & siswa SMK Negeri 1 Cisarua berfokus pada Software Development & Back-End Development.",
+      "Full-Stack Developer & siswa SMK Negeri 1 Cisarua berfokus pada Software Development, Back-End, dan Web Modern.",
     images: ["/assets/photo.jpg"]
   },
   verification: {
@@ -72,9 +73,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     "@type": "Person",
     "name": "Muhamad Daffa Permana",
     "alternateName": ["Daffa", "Daffa Permana"],
-    "jobTitle": "Junior Software Developer",
+    "jobTitle": "Full-Stack Developer",
     "description":
-      "Junior Software Developer dan siswa Rekayasa Perangkat Lunak di SMK Negeri 1 Cisarua berfokus pada Software Development dan Back-End Development.",
+      "Full-Stack Developer dan siswa Rekayasa Perangkat Lunak di SMK Negeri 1 Cisarua berfokus pada Software Development, arsitektur Back-End, dan Web Modern.",
     "url": siteUrl,
     "email": "mailto:permanadaffa89@gmail.com",
     "image": `${siteUrl}/assets/photo.jpg`,

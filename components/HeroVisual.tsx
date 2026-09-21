@@ -2,89 +2,151 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Code2, Layers3, Sparkles } from "lucide-react";
+import { ArrowUpRight, Code2, Terminal, Sparkles, Check, Copy } from "lucide-react";
+import { useState } from "react";
 import type { Project } from "@/lib/types";
 
 export function HeroVisual({ project }: { project: Project }) {
+  const [copied, setCopied] = useState(false);
   const cover = project.coverImage || (project.galleryImages && project.galleryImages[0]) || "/assets/projects/foodmart/1.webp";
   const name = project.title;
-  const screensCount = (project.galleryImages && project.galleryImages.length > 0) ? project.galleryImages.length : 1;
+
+  const codeSnippet = `// AgentQL-inspired Developer Profile
+import { Developer } from "@daffa/core";
+
+export const daffa = new Developer({
+  name: "Muhamad Daffa Permana",
+  role: "Full-Stack Developer",
+  focus: ["Backend Architecture", "Modern Web", "API Systems"],
+  stack: ["Next.js", "Node.js", "Express", "Prisma", "Docker"],
+  education: "SMK Negeri 1 Cisarua (RPL)",
+  status: "available_for_collaboration"
+});`;
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(codeSnippet);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="hero-visual" aria-label="Interactive developer workspace preview">
-      <div className="hero-visual-noise" />
-      <motion.div
-        className="hero-orbit hero-orbit-a"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        className="hero-orbit hero-orbit-b"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 38, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        className="hero-core"
-        animate={{ scale: [1, 1.06, 1], opacity: [0.7, 0.95, 0.7] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <div className="agentql-hero-visual" aria-label="Interactive AgentQL command-center developer visual">
+      {/* Aurora Ambient Glows */}
+      <div className="agentql-visual-aurora-purple" />
+      <div className="agentql-visual-plasma-pink" />
 
+      {/* Main Layer: Code Snippet Block (Signature AgentQL devtool component) */}
       <motion.div
-        className="workspace-panel"
-        initial={{ opacity: 0, y: 24, rotateX: 8, rotateY: -8 }}
-        animate={{ opacity: 1, y: 0, rotateX: 3, rotateY: -5 }}
-        transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ rotateX: 0, rotateY: -2, y: -7 }}
+        className="agentql-code-panel"
+        initial={{ opacity: 0, y: 20, rotateX: 6, rotateY: -6 }}
+        animate={{ opacity: 1, y: 0, rotateX: 2, rotateY: -3 }}
+        transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ rotateX: 0, rotateY: 0, y: -4 }}
       >
-        <div className="workspace-topbar">
-          <div className="window-dots"><i /><i /><i /></div>
-          <span>DAFFA / WORKSPACE</span>
-          <Layers3 size={13} />
+        <div className="agentql-code-header">
+          <div className="agentql-code-dots">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="agentql-code-tab">
+            <Terminal size={12} className="text-frosted" />
+            <span>daffa.profile.ts</span>
+          </div>
+          <button
+            className="agentql-copy-btn"
+            onClick={copyCode}
+            aria-label="Copy code"
+            title="Copy snippet"
+          >
+            {copied ? <Check size={13} className="text-emerald" /> : <Copy size={13} />}
+          </button>
         </div>
-        <div className="workspace-screen">
-          <Image src={cover} alt={`${name} project preview`} fill sizes="560px" priority />
-          <div className="screen-vignette" />
-          <div className="screen-label"><span>FEATURED PROJECT</span><strong>{name}</strong></div>
+
+        <div className="agentql-code-body">
+          <pre className="agentql-code-pre">
+            <code>
+              <span className="code-comment">{"// Full-Stack Developer Profile\n"}</span>
+              <span className="code-keyword">{"import "}</span>
+              <span className="code-plain">{"{ Developer } "}</span>
+              <span className="code-keyword">{"from "}</span>
+              <span className="code-string">{'"@daffa/core"'}\n\n</span>
+              <span className="code-keyword">{"export const "}</span>
+              <span className="code-var">{"daffa "}</span>
+              <span className="code-keyword">{"= new "}</span>
+              <span className="code-class">{"Developer"}</span>
+              <span className="code-plain">{"({\n"}</span>
+              <span className="code-indent">{"  name: "}</span>
+              <span className="code-string">{'"Muhamad Daffa Permana"'}\n</span>
+              <span className="code-indent">{"  role: "}</span>
+              <span className="code-string">{'"Full-Stack Developer"'}\n</span>
+              <span className="code-indent">{"  stack: "}</span>
+              <span className="code-plain">{"[\n"}</span>
+              <span className="code-indent-2">
+                <span className="code-string">{'"Next.js"'}</span>,{" "}
+                <span className="code-string">{'"Express"'}</span>,{" "}
+                <span className="code-string">{'"Node.js"'}</span>\n
+              </span>
+              <span className="code-indent">{"  ],\n"}</span>
+              <span className="code-indent">{"  school: "}</span>
+              <span className="code-string">{'"SMKN 1 Cisarua"'}\n</span>
+              <span className="code-plain">{"});"}</span>
+            </code>
+          </pre>
         </div>
-        <div className="workspace-base">
-          <div className="base-line base-line-wide" /><div className="base-line" /><div className="base-line" />
+      </motion.div>
+
+      {/* Layer 2: Featured Project Window */}
+      <motion.div
+        className="agentql-preview-card"
+        initial={{ opacity: 0, x: 20, y: 30 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ duration: 0.85, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ y: -6, scale: 1.02 }}
+      >
+        <div className="agentql-preview-topbar">
+          <span className="agentql-preview-tag">SPOTLIGHT PROJECT</span>
+          <span className="agentql-preview-title">{name}</span>
+        </div>
+        <div className="agentql-preview-img-wrap">
+          <Image
+            src={cover}
+            alt={`${name} project screenshot`}
+            fill
+            sizes="(max-width: 768px) 85vw, 320px"
+            priority
+          />
         </div>
       </motion.div>
 
+      {/* Layer 3: Floating Developer Token Badge */}
       <motion.div
-        className="identity-glass"
-        initial={{ opacity: 0, x: 30, y: 25, rotate: 5 }}
-        animate={{ opacity: 1, x: 0, y: 0, rotate: 3 }}
-        transition={{ duration: 1, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -9, rotate: 1 }}
+        className="agentql-token-badge"
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ y: -5 }}
       >
-        <div className="identity-shine" />
-        <div className="identity-header"><span>DEVELOPER ID</span><span className="identity-status" /></div>
-        <div className="identity-photo"><Image src="/assets/photo.jpg" alt="Muhamad Daffa Permana" fill sizes="230px" /></div>
-        <div className="identity-name">Muhamad Daffa<br />Permana</div>
-        <div className="identity-role">Full-Stack Developer</div>
-        <div className="identity-footer"><Code2 size={13} /><span>DAFFA·EXP</span><ArrowUpRight size={13} /></div>
+        <div className="agentql-token-photo">
+          <Image
+            src="/assets/photo.jpg"
+            alt="Muhamad Daffa Permana"
+            fill
+            sizes="80px"
+          />
+        </div>
+        <div className="agentql-token-info">
+          <div className="agentql-token-status">
+            <span className="status-live-dot" />
+            <span className="agentql-token-role">Full-Stack Dev</span>
+          </div>
+          <strong className="agentql-token-name">Daffa Permana</strong>
+          <span className="agentql-token-sub">SMKN 1 Cisarua</span>
+        </div>
+        <div className="agentql-token-arrow">
+          <ArrowUpRight size={14} />
+        </div>
       </motion.div>
-
-      <motion.div
-        className="hero-float-card hero-float-top"
-        animate={{ y: [0, -9, 0], rotate: [-3, -2, -3] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Sparkles size={14} />
-        <div><strong>Digital craft</strong><span>Clean · functional · refined</span></div>
-      </motion.div>
-
-      <motion.div
-        className="hero-float-card hero-float-bottom"
-        animate={{ y: [0, 8, 0], rotate: [2, 1, 2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <span className="float-number">{screensCount}</span>
-        <div><strong>Project screens</strong><span>Open the full archive below</span></div>
-      </motion.div>
-
-      <div className="hero-ground-glow" />
     </div>
   );
 }

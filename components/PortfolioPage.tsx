@@ -134,9 +134,6 @@ function SiteNav() {
           <a className="btn btn--primary btn--sm" href="#contact">
             Contact
           </a>
-          <a className="nav__studio-link" href="/daffa-studio" title="Studio Admin">
-            <Sparkles size={14} aria-hidden="true" />
-          </a>
           <button
             type="button"
             className="nav__toggle"
@@ -625,6 +622,9 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
             </a>
             <a href={`mailto:${EMAIL}`} aria-label="Email">
               <Mail size={16} aria-hidden="true" /> Email
+            </a>
+            <a href="/daffa-studio" aria-label="Daffa Studio Admin">
+              Studio
             </a>
             <a href="#home">
               Back to top <ArrowUpRight size={14} aria-hidden="true" />

@@ -1458,7 +1458,7 @@ ol {
 
 @media (max-width: 860px) {
   :root {
-    --section-gap: 72px;
+    --section-gap: 80px;
   }
 
   .nav__inner {
@@ -1481,8 +1481,9 @@ ol {
     top: var(--nav-height);
     left: 0;
     right: 0;
-    padding: 8px var(--page-gutter) 24px;
-    background: var(--color-void);
+    padding: 12px var(--page-gutter) 28px;
+    background: rgba(9, 10, 12, 0.98);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--hairline-dark);
     opacity: 0;
     visibility: hidden;
@@ -1513,16 +1514,17 @@ ol {
   }
 
   .hero {
-    padding-top: calc(var(--nav-height) + 40px);
+    padding-top: calc(var(--nav-height) + 36px);
+    padding-bottom: 56px;
   }
 
   .hero__inner {
-    gap: 40px;
+    gap: 48px;
   }
 
   .hero__beam {
     left: 60%;
-    opacity: 0.7;
+    opacity: 0.55;
   }
 
   .hero__sunburst {
@@ -1589,8 +1591,12 @@ ol {
   }
 
   .hero {
-    padding-top: calc(var(--nav-height) + 24px);
-    padding-bottom: 48px;
+    padding-top: calc(var(--nav-height) + 36px);
+    padding-bottom: 56px;
+  }
+
+  .hero__inner {
+    gap: 44px;
   }
 
   .hero__beam {
@@ -1604,35 +1610,41 @@ ol {
   }
 
   .hero__eyebrow {
-    font-size: 12px;
-    padding: 5px 12px;
-    margin-bottom: 14px;
+    font-size: 12.5px;
+    padding: 7px 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
   }
 
   .hero__title {
-    font-size: clamp(34px, 10.5vw, 46px);
-    line-height: 1.05;
-    letter-spacing: -0.035em;
+    font-size: clamp(33px, 9vw, 44px);
+    line-height: 1.16;
+    letter-spacing: -0.03em;
     color: #ffffff;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+    margin-bottom: 4px;
   }
 
   .hero__lead {
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 15.5px;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
     color: #cbd5e1;
-    margin-top: 14px;
+    margin-top: 18px;
+    max-width: 100%;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
   }
 
   .hero__cta {
-    margin-top: 22px;
-    gap: 10px;
+    margin-top: 26px;
+    gap: 12px;
   }
 
   .hero__cta .btn {
     flex: 1 1 100%;
     justify-content: center;
+    padding: 13px 20px;
+    font-size: 14.5px;
   }
 
   .hero-visual__bar {
@@ -1650,7 +1662,8 @@ ol {
     width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
-    padding-bottom: 2px;
+    padding-bottom: 4px;
+    gap: 8px;
   }
 
   .hero-visual__tabs::-webkit-scrollbar {
@@ -1659,10 +1672,12 @@ ol {
 
   .pill-tab {
     flex: none;
+    padding: 8px 14px;
+    font-size: 12.5px;
   }
 
   .frame__bar {
-    height: 28px;
+    height: 30px;
   }
 
   .frame__url {

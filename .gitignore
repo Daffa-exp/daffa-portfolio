@@ -3,6 +3,5 @@ node_modules
 out
 .env*
 !.env.example
-
 .vercel
-.env*
+agent-manager.json

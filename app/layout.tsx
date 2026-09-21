@@ -1,6 +1,27 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Inter, Sora, IBM_Plex_Mono } from "next/font/google";
+import "./tokens.css";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-esbuild",
+  display: "swap"
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+  display: "swap"
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://daffa-portfolio-sigma.vercel.app";
 
@@ -186,7 +207,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   };
 
   return (
-    <html lang="id">
+    <html lang="id" className={`${inter.variable} ${sora.variable} ${ibmPlexMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -201,7 +222,12 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }

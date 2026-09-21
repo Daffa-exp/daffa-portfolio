@@ -5,22 +5,26 @@ import { motion } from "framer-motion";
 export function AmbientBackground() {
   return (
     <div className="ambient" aria-hidden="true">
-      {/* Background canvas */}
+      {/* Deep Canvas */}
       <div className="ambient-canvas" />
 
-      {/* Huly Signature Vertical Aurora Beam (Electric Iris -> Ember Pulse -> Snow) */}
-      <div className="huly-hero-aurora-beam" />
-
-      {/* Huly Warm Sunburst Glow at Base */}
-      <div className="huly-sunburst-glow" />
-
-      {/* Subtle secondary ambient iris wash */}
+      {/* Atmospheric Aurora Cloud on the Right */}
       <motion.div
-        className="huly-iris-ambient"
-        animate={{ opacity: [0.3, 0.45, 0.3], scale: [1, 1.05, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="huly-aurora-cloud-right"
+        animate={{ opacity: [0.45, 0.65, 0.45], scale: [1, 1.04, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
+
+      {/* Vertical Light Pillar / Laser Line */}
+      <div className="huly-laser-pillar" />
+
+      {/* Fan / Flare Bloom at the Base of the Beam */}
+      <div className="huly-beam-flare" />
+
+      {/* Warm Amber / Ember Glow Underneath the Flare */}
+      <div className="huly-sunburst-glow" />
     </div>
   );
 }
+
 

@@ -1,0 +1,153 @@
+/* ==========================================================================
+   DESIGN TOKENS
+   Single source of truth for the portfolio design system.
+   Reference: DESIGN (1) huly.md  (Aurora through a midnight observatory)
+   Rule: iris + ember are the ONLY chromatic colors. Everything else is
+   a step on the graphite scale.
+   ========================================================================== */
+
+:root {
+  /* ---- Color: graphite scale ---- */
+  --color-obsidian-canvas: #303236;
+  --color-void: #090a0c;
+  --color-charcoal-card: #111111;
+  --color-slate-edge: #4a4b50;
+  --color-iron-veil: #6b6c6d;
+  --color-smoke: #95979e;
+  --color-ash: #a9a9aa;
+  --color-frost: #d1d1d1;
+  --color-linen: #e5e5e7;
+  --color-snow: #ffffff;
+  --color-molasses: #5a250a;
+
+  /* ---- Color: the chromatic pair ---- */
+  --color-electric-iris: #5683da;
+  --color-ember-pulse: #ff8964;
+
+  /* ---- Color: light-section helpers (from the reference's light band) ---- */
+  --color-ink: #050506;
+  --color-linen-surface: #f6f6f6;
+
+  /* ---- Surfaces ---- */
+  --surface-obsidian-canvas: var(--color-obsidian-canvas);
+  --surface-void: var(--color-void);
+  --surface-charcoal-card: var(--color-charcoal-card);
+  --surface-light-canvas: var(--color-snow);
+  --surface-linen: var(--color-linen-surface);
+  --surface-card-deep: #0e0e10;
+
+  /* ---- Tinted fills (chip = category color at 12%) ---- */
+  --tint-iris: rgba(86, 131, 218, 0.12);
+  --tint-iris-border: rgba(86, 131, 218, 0.28);
+  --tint-ember: rgba(255, 137, 100, 0.12);
+  --tint-ember-border: rgba(255, 137, 100, 0.28);
+  --hairline-dark: rgba(255, 255, 255, 0.08);
+
+  /* ---- Typography: families ---- */
+  --font-inter: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Esbuild is the reference display face; Sora is the specified substitute. */
+  --font-esbuild: "Sora Variable", "Sora", "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-ibm-plex-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* ---- Typography: scale ---- */
+  --text-caption: 11px;
+  --leading-caption: 1.38;
+  --tracking-caption: -0.1px;
+  --text-body: 14px;
+  --leading-body: 1.5;
+  --tracking-body: -0.14px;
+  --text-body-lg: 16px;
+  --leading-body-lg: 1.5;
+  --tracking-body-lg: -0.16px;
+  --text-subheading: 18px;
+  --leading-subheading: 1.5;
+  --tracking-subheading: -0.36px;
+  --text-heading-sm: 22px;
+  --leading-heading-sm: 1.25;
+  --text-heading: 24px;
+  --leading-heading: 1.25;
+  --tracking-heading: -0.48px;
+  --text-display-sm: 32px;
+  --leading-display-sm: 1;
+  --tracking-display-sm: -1.6px;
+  --text-display: 80px;
+  --leading-display: 0.94;
+  --tracking-display: -4px;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---- Spacing (4px base) ---- */
+  --spacing-unit: 4px;
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-40: 40px;
+  --spacing-64: 64px;
+  --spacing-160: 160px;
+  --spacing-180: 180px;
+  --spacing-240: 240px;
+
+  /* ---- Layout ---- */
+  --page-max-width: 1200px;
+  --page-gutter: 24px;
+  --section-gap: 96px;
+  --card-padding: 24px;
+  --element-gap: 12px;
+  --nav-height: 64px;
+
+  /* ---- Radius: cards 12, panels 30, buttons/tags 9999, inputs 4 ---- */
+  --radius-md: 4px;
+  --radius-xl: 12px;
+  --radius-3xl: 30px;
+  --radius-full: 9999px;
+  --radius-card: 12px;
+  --radius-panel: 30px;
+  --radius-pill: 9999px;
+  --radius-input: 4px;
+  /* aliases used by legacy modal / carousel / assistant styles */
+  --radius-tags: var(--radius-pill);
+  --radius-cards: var(--radius-card);
+  --radius-inputs: var(--radius-input);
+  --radius-panels: var(--radius-panel);
+  --radius-buttons: var(--radius-pill);
+
+  /* ---- Shadows (dark surfaces lean on borders; these are for frames/overlays) ---- */
+  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 4px 6px 0px;
+  --shadow-md: rgba(0, 0, 0, 0.35) 0px 4px 16px 0px;
+  --shadow-xl: rgba(0, 0, 0, 0.5) 0px 6px 25px 0px;
+  --shadow-subtle: rgba(255, 255, 255, 0.4) 0px 0px 0px 6px;
+  --shadow-light-card: 0 1px 2px rgba(5, 5, 6, 0.04), 0 8px 24px -12px rgba(5, 5, 6, 0.12);
+
+  /* ---- Gradients: only two families ---- */
+  /* 1. Aurora (hero only, narrow beam) */
+  --gradient-aurora: linear-gradient(
+    180deg,
+    rgba(86, 131, 218, 0) 0%,
+    rgba(86, 131, 218, 0.7) 22%,
+    #ff8964 68%,
+    #ffffff 100%
+  );
+  /* 2. Radial ember glow (project card / feature corner bleed) */
+  --gradient-ember-glow: radial-gradient(
+    circle at 100% 0%,
+    rgba(255, 170, 129, 0.22) 0%,
+    rgba(255, 137, 100, 0.08) 38%,
+    rgba(255, 137, 100, 0) 70%
+  );
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 160ms;
+  --duration-base: 260ms;
+  --duration-slow: 600ms;
+}

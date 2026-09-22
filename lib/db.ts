@@ -834,6 +834,8 @@ export const db = {
 
     return {
       totalProjects: projects.length,
+      publishedProjects: projects.filter((p) => !p.hidden).length,
+      hiddenProjects: projects.filter((p) => p.hidden).length,
       featuredProjects: projects.filter((p) => p.featured).length,
       totalCertificates: certs.length,
       totalMedia: media.length,

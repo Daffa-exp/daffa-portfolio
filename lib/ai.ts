@@ -36,7 +36,7 @@ function getAIConfig(): AIConfig {
 function buildPortfolioContext(): string {
   const profile = db.getProfile();
   const skills = db.getSkills();
-  const projects = db.getProjects();
+  const projects = db.getPublicProjects();
   const certs = db.getCertificates();
 
   return `
@@ -97,7 +97,7 @@ ${certs
 // Low-latency, zero-hallucination intelligent fallback when no external LLM API key is set
 function answerWithLocalRAG(query: string): { text: string; actions: AIMessage["actions"] } {
   const q = query.toLowerCase();
-  const projects = db.getProjects();
+  const projects = db.getPublicProjects();
   const certs = db.getCertificates();
   const profile = db.getProfile();
   const skills = db.getSkills();
@@ -152,8 +152,9 @@ function answerWithLocalRAG(query: string): { text: string; actions: AIMessage["
   if (q.includes("proyek") || q.includes("project") || q.includes("karya") || q.includes("portofolio")) {
     actions.push({ label: "Lihat Bagian Proyek", url: "#projects", type: "scroll" });
     const featuredList = projects.filter((p) => p.featured).map((p) => `• **${p.title}** (${p.category}) — ${p.tagline}`).join("\n");
+    const featuredCount = projects.filter((p) => p.featured).length;
     return {
-      text: `Daffa telah membangun lebih dari ${projects.length} proyek web, desktop, mobile, dan AI. 3 proyek unggulan utama adalah:\n\n${featuredList}\n\nAda juga proyek desktop seperti *Kas Kelas* (Electron) & *Hubin*, sistem AI *Exam Monitoring System* (OpenCV/MediaPipe), dan lainnya.`,
+      text: `Daffa telah membangun ${projects.length} proyek publik aktif (web, desktop, mobile, dan AI). Proyek unggulan utama (${featuredCount} proyek) meliputi:\n\n${featuredList}\n\nAda juga proyek desktop seperti *Kas Kelas* (Electron) & *Hubin*, sistem AI *Exam Monitoring System* (OpenCV/MediaPipe), dan karya lainnya.`,
       actions
     };
   }

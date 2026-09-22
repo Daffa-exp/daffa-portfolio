@@ -33,6 +33,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
     coverImage: "",
     galleryImages: [] as string[],
     featured: false,
+    hidden: false,
     order: 1
   });
 
@@ -61,6 +62,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
           coverImage: data.coverImage || "",
           galleryImages: Array.isArray(data.galleryImages) ? data.galleryImages : [],
           featured: Boolean(data.featured),
+          hidden: Boolean(data.hidden),
           order: data.order || 1
         });
       } catch (err: unknown) {
@@ -482,6 +484,17 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                   onChange={handleChange}
                 />
                 <span>Tampilkan sebagai Featured Project di Beranda</span>
+              </label>
+            </div>
+            <div className="studio-field-checkbox">
+              <label>
+                <input
+                  type="checkbox"
+                  name="hidden"
+                  checked={formData.hidden}
+                  onChange={handleChange}
+                />
+                <span>Sembunyikan dari Portofolio Publik (Draft / Hidden)</span>
               </label>
             </div>
           </div>

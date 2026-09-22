@@ -10,7 +10,8 @@ import {
   Trash2,
   Edit,
   ExternalLink,
-  ArrowUpDown,
+  Eye,
+  EyeOff,
   AlertCircle
 } from "lucide-react";
 import type { Project } from "@/lib/types";
@@ -59,6 +60,23 @@ export default function StudioProjectsPage() {
     }
   }
 
+  async function togglePublished(project: Project) {
+    try {
+      const res = await fetch(`/api/studio/projects/${project.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hidden: !project.hidden })
+      });
+      if (res.ok) {
+        setProjects((prev) =>
+          prev.map((p) => (p.id === project.id ? { ...p, hidden: !p.hidden } : p))
+        );
+      }
+    } catch (e) {
+      console.error("Failed to toggle published", e);
+    }
+  }
+
   async function handleDelete(project: Project) {
     const ok = window.confirm(`Apakah kamu yakin ingin menghapus proyek "${project.title}"?`);
     if (!ok) return;
@@ -89,13 +107,25 @@ export default function StudioProjectsPage() {
     return matchSearch && matchCategory;
   });
 
+  const publishedCount = projects.filter((p) => !p.hidden).length;
+  const hiddenCount    = projects.filter((p) => p.hidden).length;
+
   return (
     <div className="studio-page">
       <div className="studio-header">
         <div>
           <div className="studio-kicker">CONTENT MANAGEMENT</div>
           <h1>Projects CMS</h1>
-          <p>Kelola semua proyek portofolio, atur urutan tampilan, status featured, dan detail teknis.</p>
+          <p>
+            Kelola semua proyek portofolio, atur urutan tampilan, status featured, dan visibilitas publik.
+            {" "}
+            <span style={{ color: "#22d3ee", fontWeight: 600 }}>{publishedCount} Published</span>
+            {hiddenCount > 0 && (
+              <span style={{ color: "rgba(255,255,255,0.35)", marginLeft: 8 }}>
+                · {hiddenCount} Hidden
+              </span>
+            )}
+          </p>
         </div>
         <div className="studio-actions">
           <Link href="/daffa-studio/projects/new" className="studio-btn studio-btn-primary">
@@ -110,6 +140,18 @@ export default function StudioProjectsPage() {
           <span>{error}</span>
         </div>
       )}
+
+      {/* Summary bar */}
+      <div className="studio-pub-summary">
+        <div className="studio-pub-chip studio-pub-chip--live">
+          <Eye size={13} /> {publishedCount} Tampil di Portofolio
+        </div>
+        {hiddenCount > 0 && (
+          <div className="studio-pub-chip studio-pub-chip--hidden">
+            <EyeOff size={13} /> {hiddenCount} Disembunyikan
+          </div>
+        )}
+      </div>
 
       {/* Filter and Search Bar */}
       <div className="studio-filter-bar">
@@ -152,22 +194,23 @@ export default function StudioProjectsPage() {
               <tr>
                 <th>Order</th>
                 <th>Cover</th>
-                <th>Project Title & Tagline</th>
+                <th>Project Title &amp; Tagline</th>
                 <th>Category</th>
                 <th>Tech Stack</th>
                 <th>Team</th>
                 <th>Featured</th>
+                <th>Published</th>
                 <th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredProjects.map((project, idx) => (
-                <tr key={project.id}>
+                <tr key={project.id} className={project.hidden ? "studio-row-hidden" : ""}>
                   <td className="studio-order-cell">
                     <span className="studio-order-badge">#{project.order || idx + 1}</span>
                   </td>
                   <td className="studio-img-cell">
-                    <div className="studio-thumb-preview">
+                    <div className="studio-thumb-preview" style={{ opacity: project.hidden ? 0.4 : 1 }}>
                       <Image
                         src={project.coverImage || "/assets/projects/foodmart/1.webp"}
                         alt={project.title}
@@ -178,8 +221,11 @@ export default function StudioProjectsPage() {
                   </td>
                   <td>
                     <div className="studio-project-title-cell">
-                      <strong>{project.title}</strong>
+                      <strong style={{ opacity: project.hidden ? 0.5 : 1 }}>{project.title}</strong>
                       <small>{project.tagline}</small>
+                      {project.hidden && (
+                        <span className="studio-hidden-badge">HIDDEN</span>
+                      )}
                     </div>
                   </td>
                   <td>
@@ -205,8 +251,23 @@ export default function StudioProjectsPage() {
                       className={`studio-star-btn ${project.featured ? "active" : ""}`}
                       onClick={() => toggleFeatured(project)}
                       title={project.featured ? "Featured on homepage" : "Mark as featured"}
+                      disabled={project.hidden}
                     >
                       <Star size={16} fill={project.featured ? "currentColor" : "none"} />
+                    </button>
+                  </td>
+                  <td>
+                    {/* Publish / Hide toggle */}
+                    <button
+                      className={`studio-publish-btn ${project.hidden ? "studio-publish-btn--hidden" : "studio-publish-btn--live"}`}
+                      onClick={() => togglePublished(project)}
+                      title={project.hidden ? "Klik untuk tampilkan di portofolio" : "Klik untuk sembunyikan dari portofolio"}
+                    >
+                      {project.hidden ? (
+                        <><EyeOff size={14} /> Hidden</>
+                      ) : (
+                        <><Eye size={14} /> Live</>
+                      )}
                     </button>
                   </td>
                   <td className="text-right">

@@ -46,6 +46,7 @@ export async function POST(request: Request) {
       coverImage: coverImage || "/assets/projects/foodmart/1.webp",
       galleryImages: Array.isArray(galleryImages) && galleryImages.length > 0 ? galleryImages : [coverImage || "/assets/projects/foodmart/1.webp"],
       featured: Boolean(body.featured),
+      hidden: Boolean(body.hidden),
       order: Number(body.order) || db.getProjects().length + 1
     });
 

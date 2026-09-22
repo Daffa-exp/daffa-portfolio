@@ -26,6 +26,7 @@ export default function NewProjectPage() {
     coverImage: "/assets/projects/foodmart/1.webp",
     galleryImages: ["/assets/projects/foodmart/1.webp"],
     featured: false,
+    hidden: false,
     order: 1
   });
 
@@ -338,6 +339,17 @@ export default function NewProjectPage() {
                   onChange={handleChange}
                 />
                 <span>Tampilkan sebagai Featured Project di Beranda</span>
+              </label>
+            </div>
+            <div className="studio-field-checkbox">
+              <label>
+                <input
+                  type="checkbox"
+                  name="hidden"
+                  checked={formData.hidden}
+                  onChange={handleChange}
+                />
+                <span>Sembunyikan dari Portofolio Publik (Draft / Hidden)</span>
               </label>
             </div>
           </div>

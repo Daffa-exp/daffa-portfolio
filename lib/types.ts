@@ -73,6 +73,8 @@ export interface SkillGroup {
 
 export interface StudioHealth {
   totalProjects: number;
+  publishedProjects: number;
+  hiddenProjects: number;
   featuredProjects: number;
   totalCertificates: number;
   totalMedia: number;

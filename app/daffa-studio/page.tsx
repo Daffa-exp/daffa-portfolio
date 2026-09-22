@@ -73,7 +73,12 @@ export default function StudioDashboardPage() {
           </div>
           <div className="studio-stat-value">{health?.totalProjects ?? 0}</div>
           <div className="studio-stat-foot">
-            <span className="text-cyan-400">{health?.featuredProjects ?? 0}</span> Featured projects live
+            <span className="text-cyan-400">{health?.publishedProjects ?? 0}</span> Published
+            {(health?.hiddenProjects ?? 0) > 0 && (
+              <span style={{ marginLeft: 8, color: "rgba(255,255,255,0.35)" }}>
+                · {health?.hiddenProjects} Hidden
+              </span>
+            )}
           </div>
         </div>
 

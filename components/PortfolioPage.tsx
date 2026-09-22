@@ -623,7 +623,7 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
             <a href={`mailto:${EMAIL}`} aria-label="Email">
               <Mail size={16} aria-hidden="true" /> Email
             </a>
-            <a href="/daffa-studio" aria-label="Daffa Studio Admin">
+            <a href="/daffa-studio/login" aria-label="Daffa Studio Admin">
               Studio
             </a>
             <a href="#home">

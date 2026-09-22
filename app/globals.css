@@ -1717,13 +1717,68 @@ ol {
     flex: 1 1 auto;
   }
 
-  .compact {
+  .compact-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .compact {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    align-items: center;
   }
 
   .compact__thumb {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
+    width: 96px;
+    height: 96px;
+    border-radius: 8px;
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  .compact__body {
+    gap: 4px;
+    width: 100%;
+  }
+
+  .compact__title {
+    font-size: 15px;
+    line-height: 1.25;
+    margin-bottom: 2px;
+  }
+
+  .compact__desc {
+    font-size: 12px;
+    line-height: 1.4;
+    -webkit-line-clamp: 1;
+    margin-bottom: 2px;
+  }
+
+  .compact .tags {
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+
+  .compact .tag {
+    font-size: 10.5px;
+    padding: 2px 7px;
+  }
+
+  .compact .actions {
+    gap: 6px;
+    margin-top: 2px;
+    flex-wrap: wrap;
+  }
+
+  .compact .actions .btn {
+    padding: 6px 11px;
+    font-size: 11.5px;
+    gap: 4px;
+    border-radius: 6px;
   }
 
   .panel {
@@ -4932,3 +4987,213 @@ ol {
 .studio-row-hidden {
   background: rgba(0, 0, 0, 0.2);
 }
+
+/* ==========================================================================
+   STUDIO CMS — Cover Photo & Visual Gallery Manager
+   ========================================================================== */
+
+.studio-cover-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(86, 131, 218, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.studio-cover-header {
+  margin-bottom: 14px;
+}
+
+.studio-label-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.studio-cover-card-preview {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+
+.studio-cover-img-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #080a0e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.studio-cover-img {
+  object-fit: cover;
+}
+
+.studio-cover-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 11px;
+  gap: 6px;
+  text-align: center;
+  padding: 12px;
+}
+
+.studio-cover-badge-active {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.9);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.studio-cover-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.studio-gallery-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.studio-gallery-grid-visual {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.studio-gallery-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.15s ease;
+}
+
+.studio-gallery-card.is-cover {
+  border-color: #22d3ee;
+  background: rgba(34, 211, 238, 0.06);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.15);
+}
+
+.studio-gallery-card-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  background: #090b10;
+}
+
+.studio-thumb-img {
+  object-fit: cover;
+}
+
+.studio-cover-pill {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #22d3ee;
+  color: #080a0e;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.studio-gallery-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.studio-btn-cover-set {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.studio-btn-cover-set:hover {
+  background: var(--color-electric-iris, #5683da);
+  color: #fff;
+  border-color: var(--color-electric-iris, #5683da);
+}
+
+.studio-cover-selected-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #22d3ee;
+}
+
+.studio-btn-icon-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #f87171;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.studio-btn-icon-danger:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .studio-cover-card-preview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .studio-gallery-grid-visual {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+

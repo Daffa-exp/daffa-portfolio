@@ -1,13 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, Sparkles, AlertCircle, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
+import {
+  ArrowLeft,
+  Save,
+  AlertCircle,
+  Plus,
+  Trash2,
+  Star,
+  CheckCircle2,
+  Upload,
+  Image as ImageIcon
+} from "lucide-react";
 
 export default function NewProjectPage() {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -46,20 +59,95 @@ export default function NewProjectPage() {
     }
   }
 
-  function addGalleryImage() {
-    if (!newGalleryUrl.trim()) return;
+  function setAsCover(url: string) {
     setFormData((prev) => ({
       ...prev,
-      galleryImages: [...prev.galleryImages, newGalleryUrl.trim()]
+      coverImage: url,
+      galleryImages: prev.galleryImages.includes(url)
+        ? prev.galleryImages
+        : [url, ...prev.galleryImages]
     }));
+  }
+
+  function addGalleryImage() {
+    const trimmed = newGalleryUrl.trim();
+    if (!trimmed) return;
+    setFormData((prev) => {
+      const updated = prev.galleryImages.includes(trimmed)
+        ? prev.galleryImages
+        : [...prev.galleryImages, trimmed];
+      return {
+        ...prev,
+        coverImage: prev.coverImage || trimmed,
+        galleryImages: updated
+      };
+    });
     setNewGalleryUrl("");
   }
 
   function removeGalleryImage(idx: number) {
-    setFormData((prev) => ({
-      ...prev,
-      galleryImages: prev.galleryImages.filter((_, i) => i !== idx)
-    }));
+    setFormData((prev) => {
+      const removedUrl = prev.galleryImages[idx];
+      const updated = prev.galleryImages.filter((_, i) => i !== idx);
+      let newCover = prev.coverImage;
+      if (prev.coverImage === removedUrl) {
+        newCover = updated[0] || "";
+      }
+      return {
+        ...prev,
+        coverImage: newCover,
+        galleryImages: updated
+      };
+    });
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    try {
+      setUploading(true);
+      setError("");
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const data = new FormData();
+        data.append("file", file);
+        data.append("alt", `${formData.title || "Project"} screenshot ${i + 1}`);
+
+        const res = await fetch("/api/studio/media/upload", {
+          method: "POST",
+          body: data
+        });
+
+        if (res.ok) {
+          const item = await res.json();
+          if (item?.url) {
+            setFormData((prev) => {
+              const updated = prev.galleryImages.includes(item.url)
+                ? prev.galleryImages
+                : [...prev.galleryImages, item.url];
+              return {
+                ...prev,
+                coverImage: prev.coverImage || item.url,
+                galleryImages: updated
+              };
+            });
+          }
+        } else {
+          const errData = await res.json();
+          throw new Error(errData.error || `Gagal mengunggah gambar ${file.name}`);
+        }
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Gagal mengunggah gambar");
+      }
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -103,7 +191,7 @@ export default function NewProjectPage() {
             <ArrowLeft size={16} /> Kembali ke Daftar Proyek
           </Link>
           <h1>Tambah Proyek Baru</h1>
-          <p>Lengkapi informasi proyek dengan akurat dan detail.</p>
+          <p>Lengkapi informasi proyek, tentukan foto cover utama, dan atur visibilitas.</p>
         </div>
       </div>
 
@@ -180,7 +268,7 @@ export default function NewProjectPage() {
           </div>
 
           <div className="studio-field">
-            <label>Deskripsi Lengkap (Modal view & AI Knowledge) *</label>
+            <label>Deskripsi Lengkap (Modal view &amp; AI Knowledge) *</label>
             <textarea
               name="fullDescription"
               rows={5}
@@ -194,7 +282,7 @@ export default function NewProjectPage() {
 
         {/* Team & Collaboration Details */}
         <div className="studio-card">
-          <h3>Kolaborasi & Peran</h3>
+          <h3>Kolaborasi &amp; Peran</h3>
           <p className="studio-subtext">
             Sebutkan ukuran tim dan peran spesifik secara jujur (misal: InstanPage tim 3 orang).
           </p>
@@ -246,7 +334,7 @@ export default function NewProjectPage() {
 
         {/* URLs & Media */}
         <div className="studio-card">
-          <h3>Tautan & Gambar Proyek</h3>
+          <h3>Tautan &amp; Gambar Proyek</h3>
 
           <div className="studio-form-row">
             <div className="studio-field">
@@ -271,46 +359,156 @@ export default function NewProjectPage() {
             </div>
           </div>
 
-          <div className="studio-field">
-            <label>Cover Image URL *</label>
-            <input
-              name="coverImage"
-              value={formData.coverImage}
-              onChange={handleChange}
-              placeholder="/assets/projects/foodmart/1.webp"
-              required
-            />
+          {/* Dedicated Visual Cover Photo Manager */}
+          <div className="studio-cover-section">
+            <div className="studio-cover-header">
+              <div>
+                <label className="studio-label-highlight">
+                  <Star size={15} className="text-amber-400" /> Foto Cover Utama (Aktif) *
+                </label>
+                <p className="studio-subtext">
+                  Foto ini yang akan muncul sebagai thumbnail utama di kartu beranda portofolio.
+                </p>
+              </div>
+            </div>
+
+            <div className="studio-cover-card-preview">
+              <div className="studio-cover-img-wrap">
+                {formData.coverImage ? (
+                  <Image
+                    src={formData.coverImage}
+                    alt="Cover preview"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 320px"
+                    className="studio-cover-img"
+                  />
+                ) : (
+                  <div className="studio-cover-empty">
+                    <ImageIcon size={32} />
+                    <span>Belum ada foto cover yang dipilih</span>
+                  </div>
+                )}
+                {formData.coverImage && (
+                  <span className="studio-cover-badge-active">
+                    <CheckCircle2 size={13} /> ACTIVE COVER PHOTO
+                  </span>
+                )}
+              </div>
+
+              <div className="studio-cover-info-box">
+                <label>URL Foto Cover</label>
+                <input
+                  name="coverImage"
+                  value={formData.coverImage}
+                  onChange={handleChange}
+                  placeholder="/assets/projects/... atau /uploads/..."
+                  required
+                />
+                <small className="text-muted">
+                  Tip: Klik tombol <strong>&quot;Jadikan Cover&quot;</strong> pada salah satu screenshot galeri di bawah untuk mengganti cover secara instan.
+                </small>
+              </div>
+            </div>
           </div>
 
-          <div className="studio-field">
-            <label>Galeri Screenshot (Tambahan)</label>
-            <div className="studio-gallery-builder">
-              {formData.galleryImages.map((img, i) => (
-                <div key={i} className="studio-gallery-item-row">
-                  <span>{img}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeGalleryImage(i)}
-                    className="studio-btn-icon-danger"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              ))}
-              <div className="studio-input-append">
+          {/* Visual Gallery Manager */}
+          <div className="studio-field" style={{ marginTop: 24 }}>
+            <div className="studio-gallery-head">
+              <div>
+                <label>Galeri Screenshot Proyek</label>
+                <p className="studio-subtext">
+                  Daftar seluruh screenshot yang akan tampil di slider modal case study.
+                </p>
+              </div>
+              <div>
                 <input
-                  value={newGalleryUrl}
-                  onChange={(e) => setNewGalleryUrl(e.target.value)}
-                  placeholder="Tambahkan URL screenshot (/assets/... atau /uploads/...)"
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  multiple
+                  accept="image/*"
+                  style={{ display: "none" }}
                 />
                 <button
                   type="button"
-                  onClick={addGalleryImage}
-                  className="studio-btn studio-btn-secondary"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="studio-btn studio-btn-secondary studio-btn-sm"
                 >
-                  <Plus size={15} /> Tambah
+                  <Upload size={14} /> {uploading ? "Mengunggah..." : "Upload Foto"}
                 </button>
               </div>
+            </div>
+
+            {/* Gallery Grid */}
+            <div className="studio-gallery-grid-visual">
+              {formData.galleryImages.map((img, i) => {
+                const isCover = formData.coverImage === img;
+                return (
+                  <div key={i} className={`studio-gallery-card ${isCover ? "is-cover" : ""}`}>
+                    <div className="studio-gallery-card-thumb">
+                      <Image
+                        src={img}
+                        alt={`Screenshot ${i + 1}`}
+                        fill
+                        sizes="140px"
+                        className="studio-thumb-img"
+                      />
+                      {isCover && (
+                        <span className="studio-cover-pill">
+                          <Star size={11} fill="currentColor" /> COVER
+                        </span>
+                      )}
+                    </div>
+                    <div className="studio-gallery-card-actions">
+                      {!isCover ? (
+                        <button
+                          type="button"
+                          onClick={() => setAsCover(img)}
+                          className="studio-btn-cover-set"
+                          title="Jadikan sebagai foto cover utama"
+                        >
+                          <Star size={12} /> Jadikan Cover
+                        </button>
+                      ) : (
+                        <span className="studio-cover-selected-text">
+                          <CheckCircle2 size={12} /> Foto Cover
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeGalleryImage(i)}
+                        className="studio-btn-icon-danger"
+                        title="Hapus screenshot ini"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Quick append URL */}
+            <div className="studio-input-append" style={{ marginTop: 12 }}>
+              <input
+                value={newGalleryUrl}
+                onChange={(e) => setNewGalleryUrl(e.target.value)}
+                placeholder="Atau tempel URL gambar (/assets/... atau https://...)"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addGalleryImage();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={addGalleryImage}
+                className="studio-btn studio-btn-secondary"
+              >
+                <Plus size={15} /> Tambah URL
+              </button>
             </div>
           </div>
         </div>

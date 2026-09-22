@@ -14,6 +14,16 @@ const ALLOWED_MIME_TYPES = new Set([
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
+export async function GET() {
+  const authCheck = await auth.requireAdmin();
+  if (!authCheck.authorized) {
+    return NextResponse.json({ error: authCheck.error }, { status: 401 });
+  }
+
+  const media = db.getMedia();
+  return NextResponse.json(media);
+}
+
 export async function POST(request: Request) {
   try {
     const authCheck = await auth.requireAdmin();

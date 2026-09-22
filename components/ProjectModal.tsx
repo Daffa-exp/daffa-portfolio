@@ -174,11 +174,23 @@ export function ProjectModal({
 
             {/* SECTION 2: HERO PREVIEW IMAGE SHOWCASE */}
             <div className="case-study-showcase-stage">
-              <div
-                className="showcase-main-frame"
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
-              >
+              <div className="case-study-browser-window">
+                <div className="case-study-frame-header">
+                  <div className="case-study-dots">
+                    <span className="case-dot case-dot--red" />
+                    <span className="case-dot case-dot--amber" />
+                    <span className="case-dot case-dot--green" />
+                  </div>
+                  <div className="case-study-url-pill">
+                    {project.projectUrl ? project.projectUrl.replace(/^https?:\/\//, "") : `${project.slug}.daffa.dev`}
+                  </div>
+                </div>
+
+                <div
+                  className="showcase-main-frame"
+                  onTouchStart={handleTouchStart}
+                  onTouchEnd={handleTouchEnd}
+                >
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentImage}
@@ -234,6 +246,7 @@ export function ProjectModal({
                   </span>
                 </div>
               </div>
+            </div>
 
               {/* Thumbnails row if multiple images */}
               {images.length > 1 && (

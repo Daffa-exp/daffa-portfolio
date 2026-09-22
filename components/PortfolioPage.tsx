@@ -243,7 +243,7 @@ function CompactCard({ project, onOpen }: { project: Project; onOpen: (p: Projec
   return (
     <Reveal as="article" className="compact">
       <button type="button" className={`compact__thumb ${portrait ? "is-portrait" : ""}`} onClick={() => onOpen(project)} aria-label={`Open ${project.title} case study`}>
-        {thumb && <Image src={thumb} alt={`${project.title} screenshot`} fill sizes="160px" />}
+        {thumb && <Image src={thumb} alt={`${project.title} screenshot`} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px" />}
       </button>
       <div className="compact__body">
         <span className="tag tag--ember">{sentenceCase(project.category)}</span>

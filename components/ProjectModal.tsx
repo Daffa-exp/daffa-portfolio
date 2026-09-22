@@ -151,22 +151,22 @@ export function ProjectModal({
               <div className="case-study-cta-row">
                 {project.projectUrl && (
                   <a
-                    className="button button-primary"
+                    className="btn btn--primary"
                     href={project.projectUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    View Live Application <ExternalLink size={15} />
+                    View Live Application <ExternalLink size={14} />
                   </a>
                 )}
                 {project.githubUrl && (
                   <a
-                    className="button button-ghost"
+                    className="btn btn--ghost"
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Github size={15} /> View Source Code
+                    <Github size={14} /> View Source Code
                   </a>
                 )}
               </div>
@@ -380,15 +380,15 @@ export function ProjectModal({
               <div className="footer-right-buttons">
                 {project.projectUrl && (
                   <a
-                    className="button button-primary"
+                    className="btn btn--primary"
                     href={project.projectUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Open Live Demo <ExternalLink size={15} />
+                    Open Live Demo <ExternalLink size={14} />
                   </a>
                 )}
-                <button className="button button-ghost" onClick={onClose}>
+                <button className="btn btn--ghost" onClick={onClose}>
                   Back to Projects
                 </button>
               </div>

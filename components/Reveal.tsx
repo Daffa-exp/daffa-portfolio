@@ -7,13 +7,20 @@ interface RevealProps {
   as?: ElementType;
   className?: string;
   delay?: number;
+  direction?: "up" | "left" | "right" | "down";
 }
 
 /**
  * Restrained scroll reveal: 12px rise + fade, once per element.
  * Opacity/transform only, disabled by prefers-reduced-motion in CSS.
  */
-export function Reveal({ children, as: Tag = "div", className = "", delay = 0 }: RevealProps) {
+export function Reveal({
+  children,
+  as: Tag = "div",
+  className = "",
+  delay = 0,
+  direction = "up"
+}: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [shown, setShown] = useState(false);
 
@@ -31,16 +38,18 @@ export function Reveal({ children, as: Tag = "div", className = "", delay = 0 }:
           io.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -4% 0px" }
     );
     io.observe(node);
     return () => io.disconnect();
   }, []);
 
+  const dirClass = direction !== "up" ? `reveal--${direction}` : "";
+
   return (
     <Tag
       ref={ref}
-      className={`reveal ${shown ? "is-in" : ""} ${className}`.trim()}
+      className={`reveal ${dirClass} ${shown ? "is-in" : ""} ${className}`.trim()}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

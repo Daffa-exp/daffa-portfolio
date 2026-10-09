@@ -179,6 +179,11 @@ ol {
   font-size: 14px;
 }
 
+.muted-on-dark {
+  color: var(--color-ash);
+  font-size: 14px;
+}
+
 /* ---------- Buttons: pill geometry (9999px) ---------- */
 .btn,
 .button {
@@ -335,6 +340,14 @@ ol {
     opacity: 1;
     transform: none;
   }
+
+  .reveal--left  { transform: translateX(-20px) translateY(0); }
+  .reveal--right { transform: translateX(20px) translateY(0); }
+  .reveal--down  { transform: translateY(-12px); }
+
+  .reveal--left.is-in,
+  .reveal--right.is-in,
+  .reveal--down.is-in { transform: none; }
 }
 
 /* ==========================================================================
@@ -530,6 +543,18 @@ ol {
     rgba(255, 137, 100, 0) 68%
   );
   filter: blur(30px);
+}
+
+/* Windows artwork: large sculptural dark image on right side of hero */
+.hero__artwork {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  object-position: center right;
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  user-select: none;
 }
 
 .hero__inner {
@@ -826,6 +851,35 @@ ol {
   margin-top: 4px;
   font-weight: 500;
   color: var(--color-ink);
+}
+
+/* About section on dark band */
+.band--dark .about__lead {
+  color: var(--color-ash);
+}
+
+.band--dark .build-list {
+  border-bottom-color: var(--color-slate-edge);
+}
+
+.band--dark .build-list li {
+  border-top-color: var(--color-slate-edge);
+}
+
+.band--dark .build-list strong {
+  color: var(--color-snow);
+}
+
+.band--dark .build-list span {
+  color: var(--color-ash);
+}
+
+.band--dark .facts dt {
+  color: var(--color-smoke);
+}
+
+.band--dark .facts dd {
+  color: var(--color-snow);
 }
 
 /* ==========================================================================
@@ -1165,6 +1219,57 @@ ol {
   margin-top: 40px;
 }
 
+/* Compact cards on dark band */
+.band--dark .compact {
+  background: var(--color-charcoal-card);
+  border-color: var(--color-slate-edge);
+  box-shadow: none;
+}
+
+.band--dark .compact:hover {
+  border-color: rgba(86, 131, 218, 0.45);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.band--dark .compact__title {
+  color: var(--color-snow);
+}
+
+.band--dark .compact__desc {
+  color: var(--color-ash);
+}
+
+.band--dark .compact .btn--ghost {
+  color: var(--color-ash);
+  border-color: var(--color-slate-edge);
+}
+
+.band--dark .compact .btn--ghost:hover {
+  color: var(--color-snow);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-smoke);
+}
+
+.band--dark .compact .tag {
+  color: var(--color-frost);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-slate-edge);
+}
+
+.band--dark .more__head h3 {
+  color: var(--color-snow);
+}
+
+.band--dark .btn--outline {
+  color: var(--color-ash);
+  border-color: var(--color-slate-edge);
+}
+
+.band--dark .btn--outline:hover {
+  color: var(--color-snow);
+  border-color: var(--color-smoke);
+}
+
 /* ==========================================================================
    EXPERIENCE (dark)
    ========================================================================== */
@@ -1255,6 +1360,63 @@ ol {
 
 .panel > .muted-on-light {
   margin-top: 4px;
+}
+
+/* Dark variant for contact form panel */
+.panel--dark {
+  background: var(--color-charcoal-card);
+  border-color: var(--color-slate-edge);
+}
+
+.panel--dark h3 {
+  color: var(--color-snow);
+}
+
+.panel--dark > .muted-on-dark {
+  margin-top: 4px;
+}
+
+.panel--dark .field span {
+  color: var(--color-ash);
+}
+
+.panel--dark .field input,
+.panel--dark .field textarea {
+  color: var(--color-snow);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-slate-edge);
+}
+
+.panel--dark .field input::placeholder,
+.panel--dark .field textarea::placeholder {
+  color: var(--color-smoke);
+}
+
+.panel--dark .field input:focus,
+.panel--dark .field textarea:focus {
+  border-color: var(--color-electric-iris);
+  box-shadow: 0 0 0 3px rgba(86, 131, 218, 0.22);
+}
+
+.panel--dark .form__status {
+  color: var(--color-ash);
+}
+
+.panel--dark .form__status--success {
+  color: #4ade80;
+}
+
+.panel--dark .form__status--error {
+  color: #f87171;
+}
+
+/* Dark contact section overrides */
+.band--dark .contact__meta {
+  color: var(--color-smoke);
+}
+
+.band--dark .contact__lead--dark {
+  color: var(--color-ash);
 }
 
 .form {
@@ -1748,8 +1910,8 @@ ol {
     padding: 12px;
     gap: 12px;
     border-radius: 12px;
-    background: var(--color-snow);
-    border: 1px solid var(--color-frost);
+    background: var(--color-charcoal-card);
+    border: 1px solid var(--color-slate-edge);
     overflow: hidden;
   }
 
@@ -1789,6 +1951,7 @@ ol {
     line-height: 1.25;
     margin-bottom: 1px;
     font-weight: 700;
+    color: var(--color-snow);
   }
 
   .compact__desc {
@@ -1799,6 +1962,7 @@ ol {
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: 2px;
+    color: var(--color-ash);
   }
 
   .compact .tags {
@@ -1810,6 +1974,9 @@ ol {
   .compact .tag {
     font-size: 10.5px;
     padding: 2.5px 7.5px;
+    color: var(--color-frost);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-slate-edge);
   }
 
   .compact .actions {
@@ -1826,6 +1993,11 @@ ol {
     border-radius: 7px;
     flex: 1 1 auto;
     justify-content: center;
+  }
+
+  .compact .btn--ghost {
+    color: var(--color-ash);
+    border-color: var(--color-slate-edge);
   }
 
   .panel {

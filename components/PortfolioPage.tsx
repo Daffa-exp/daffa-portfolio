@@ -237,11 +237,11 @@ function FeatureCard({ project, lead, onOpen }: { project: Project; lead?: boole
   );
 }
 
-function CompactCard({ project, onOpen }: { project: Project; onOpen: (p: Project) => void }) {
+function CompactCard({ project, onOpen, delay = 0 }: { project: Project; onOpen: (p: Project) => void; delay?: number }) {
   const portrait = isPortraitProject(project.category);
   const thumb = project.coverImage || project.galleryImages?.[0];
   return (
-    <Reveal as="article" className="compact">
+    <Reveal as="article" className="compact" direction="up" delay={delay}>
       <button type="button" className={`compact__thumb ${portrait ? "is-portrait" : ""}`} onClick={() => onOpen(project)} aria-label={`Open ${project.title} case study`}>
         {thumb && <Image src={thumb} alt={`${project.title} screenshot`} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px" />}
       </button>
@@ -378,6 +378,14 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
         <div className="hero__aurora" aria-hidden="true">
           <span className="hero__beam" />
           <span className="hero__sunburst" />
+          <Image
+            src="/assets/windows-black.png"
+            alt=""
+            fill
+            className="hero__artwork"
+            priority
+            aria-hidden="true"
+          />
         </div>
 
         <div className="wrap hero__inner">
@@ -406,10 +414,11 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
         </div>
       </section>
 
-      {/* ---------------- ABOUT (light) ---------------- */}
-      <section id="about" className="band band--light">
+
+      {/* ---------------- ABOUT (dark) ---------------- */}
+      <section id="about" className="band band--dark">
         <div className="wrap about">
-          <Reveal className="about__head">
+          <Reveal className="about__head" direction="left">
             <div className="about__photo-wrap">
               <Image
                 src="/assets/photo.jpg"
@@ -424,7 +433,7 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
             <h2 className="display">Full-stack development, with a back-end mindset.</h2>
           </Reveal>
 
-          <Reveal className="about__body" delay={80}>
+          <Reveal className="about__body" delay={80} direction="right">
             <p className="about__lead">
               I focus on software development, back-end architecture and modern web, with hands-on work across web, desktop and mobile apps.
               I care about clean code, solving real technical problems and designing systems that stay simple to run.
@@ -471,7 +480,7 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
       {/* ---------------- SKILLS (dark) ---------------- */}
       <section id="skills" className="band band--canvas">
         <div className="wrap">
-          <Reveal className="section-head section-head--dark">
+          <Reveal className="section-head section-head--dark" direction="up">
             <div>
               <p className="kicker">Skills</p>
               <h2 className="display">The stack I work in.</h2>
@@ -483,7 +492,7 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
             {categories.map((cat, i) => {
               const Icon = SKILL_ICONS[cat.key];
               return (
-                <Reveal key={cat.key} className="skill-row" delay={i * 40}>
+                <Reveal key={cat.key} className="skill-row" delay={i * 40} direction={i % 2 === 0 ? "left" : "right"}>
                   <div className="skill-row__label">
                     <Icon size={18} aria-hidden="true" />
                     <div>
@@ -505,10 +514,10 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
         </div>
       </section>
 
-      {/* ---------------- PROJECTS (light) ---------------- */}
-      <section id="projects" className="band band--linen">
+      {/* ---------------- PROJECTS (dark) ---------------- */}
+      <section id="projects" className="band band--dark">
         <div className="wrap">
-          <Reveal className="section-head">
+          <Reveal className="section-head section-head--dark" direction="up">
             <div>
               <p className="kicker">Projects</p>
               <h2 className="display">Selected work.</h2>
@@ -533,13 +542,13 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
 
           {others.length > 0 && (
             <div className="more">
-              <Reveal className="more__head">
+              <Reveal className="more__head" direction="up">
                 <h3>More projects</h3>
-                <span className="muted-on-light">{others.length} smaller builds across web, desktop, mobile and AI</span>
+                <span className="muted-on-dark">{others.length} smaller builds across web, desktop, mobile and AI</span>
               </Reveal>
               <div className="compact-grid">
-                {visibleOthers.map((p) => (
-                  <CompactCard key={p.id} project={p} onOpen={open} />
+                {visibleOthers.map((p, i) => (
+                  <CompactCard key={p.id} project={p} onOpen={open} delay={(i % 4) * 40} />
                 ))}
               </div>
               {others.length > COMPACT_VISIBLE && (
@@ -557,7 +566,7 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
       {/* ---------------- EXPERIENCE (dark) ---------------- */}
       <section id="experience" className="band band--dark">
         <div className="wrap">
-          <Reveal className="section-head section-head--dark">
+          <Reveal className="section-head section-head--dark" direction="up">
             <div>
               <p className="kicker">Experience</p>
               <h2 className="display">Learning by building.</h2>
@@ -567,7 +576,7 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
 
           <ol className="timeline">
             {EDUCATION.map((e, i) => (
-              <Reveal as="li" key={e.school} className="timeline__item" delay={i * 60}>
+              <Reveal as="li" key={e.school} className="timeline__item" delay={i * 60} direction="up">
                 <span className="timeline__period">{e.period}</span>
                 <strong>{e.school}</strong>
                 <span>{e.field}</span>
@@ -581,24 +590,24 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
         </div>
       </section>
 
-      {/* ---------------- CONTACT (light) ---------------- */}
-      <section id="contact" className="band band--light">
+      {/* ---------------- CONTACT (dark) ---------------- */}
+      <section id="contact" className="band band--dark">
         <div className="wrap contact">
-          <Reveal className="contact__intro">
+          <Reveal className="contact__intro" direction="left">
             <p className="kicker">Contact</p>
             <h2 className="display display--xl">
               Have an idea?
               <br />
               Let&apos;s build it.
             </h2>
-            <p className="about__lead">
+            <p className="about__lead contact__lead--dark">
               Open to collaboration, internships and interesting problems. The fastest way to reach me is email.
             </p>
             <div className="actions">
               <a className="btn btn--primary btn--lg" href={`mailto:${EMAIL}`}>
                 <Mail size={16} aria-hidden="true" /> Email me
               </a>
-              <a className="btn btn--outline btn--lg" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+              <a className="btn btn--ghost btn--lg" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
                 <Github size={16} aria-hidden="true" /> GitHub
               </a>
             </div>
@@ -607,9 +616,9 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
             </p>
           </Reveal>
 
-          <Reveal className="panel" delay={80}>
+          <Reveal className="panel panel--dark" delay={80} direction="right">
             <h3>Send a message</h3>
-            <p className="muted-on-light">It goes straight to my inbox.</p>
+            <p className="muted-on-dark">It goes straight to my inbox.</p>
             <ContactForm />
           </Reveal>
         </div>

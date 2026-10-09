@@ -581,7 +581,9 @@ export const db = {
   // Projects
   getProjects(includeHidden: boolean = true): Project[] {
     const data = getDatabase();
-    const list = includeHidden ? data.projects : data.projects.filter((p) => !p.hidden);
+    const list = includeHidden
+      ? data.projects
+      : data.projects.filter((p) => !p.hidden && (p as any).hidden !== "true");
     return [...list].sort((a, b) => a.order - b.order);
   },
 

@@ -37,6 +37,14 @@ export async function PUT(
       body.technologies = body.technologies.split(",").map((s: string) => s.trim()).filter(Boolean);
     }
 
+    if ("hidden" in body) {
+      body.hidden = body.hidden === true || body.hidden === "true";
+    }
+
+    if ("featured" in body) {
+      body.featured = body.featured === true || body.featured === "true";
+    }
+
     const updated = db.updateProject(id, body);
     if (!updated) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });

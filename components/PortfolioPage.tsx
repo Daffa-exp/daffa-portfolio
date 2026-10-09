@@ -344,7 +344,9 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
         const res = await fetch("/api/public/data");
         if (res.ok) {
           const data = await res.json();
-          if (data.projects && data.projects.length > 0) setProjects(data.projects);
+          if (data.projects && data.projects.length > 0) {
+            setProjects(data.projects.filter((p: Project) => !p.hidden && (p as any).hidden !== "true"));
+          }
           if (data.certificates && data.certificates.length > 0) setCerts(data.certificates);
           if (data.skills && data.skills.length > 0) setSkillsList(data.skills);
         }
@@ -355,9 +357,13 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
     syncData();
   }, []);
 
-  const featured = useMemo(() => projects.filter((p) => p.featured), [projects]);
-  const others = useMemo(() => projects.filter((p) => !p.featured), [projects]);
-  const heroProjects = featured.length ? featured : projects.slice(0, 3);
+  const activeProjects = useMemo(
+    () => projects.filter((p) => !p.hidden && (p as any).hidden !== "true"),
+    [projects]
+  );
+  const featured = useMemo(() => activeProjects.filter((p) => p.featured), [activeProjects]);
+  const others = useMemo(() => activeProjects.filter((p) => !p.featured), [activeProjects]);
+  const heroProjects = featured.length ? featured : activeProjects.slice(0, 3);
   const [lead, ...restFeatured] = featured;
   const visibleOthers = showAll ? others : others.slice(0, COMPACT_VISIBLE);
   const categories = useMemo(() => groupSkills(skillsList), [skillsList]);
@@ -622,9 +628,6 @@ export default function PortfolioPage({ initialProjects, initialCertificates, in
             </a>
             <a href={`mailto:${EMAIL}`} aria-label="Email">
               <Mail size={16} aria-hidden="true" /> Email
-            </a>
-            <a href="/daffa-studio/login" aria-label="Daffa Studio Admin">
-              Studio
             </a>
             <a href="#home">
               Back to top <ArrowUpRight size={14} aria-hidden="true" />
